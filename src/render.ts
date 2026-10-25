@@ -1,0 +1,52 @@
+import fs from "fs";
+import path from "path";
+import sharp from "sharp";
+import { Photo, Preview } from "./widen";
+
+export const MAX = 2048; // largest Widen preview
+
+const ASSETS = path.join(__dirname, "..", "assets");
+const svgInner = (file: string) => fs.readFileSync(path.join(ASSETS, file), "utf8").replace(/^<svg[^>]*>|<\/svg>\s*$/g, "");
+const avatar = svgInner("scotty-avatar.svg"); // 320 x 320
+const bust = svgInner("scotty-bust.svg"); // viewBox 30 40 268 260
+const BUST = { x: 30, y: 40, w: 268, h: 260 };
+
+export class StaleLinkError extends Error {}
+
+// Previews fit a size x size box. Use the smallest that still covers w x h.
+export function pickPreview(photo: Photo, w: number, h: number): Preview {
+  const pw = (n: number) => n * Math.min(1, photo.aspect);
+  const ph = (n: number) => n * Math.min(1, 1 / photo.aspect);
+  return photo.previews.find((p) => pw(p.size) >= w && ph(p.size) >= h) ?? photo.previews[photo.previews.length - 1];
+}
+
+export async function renderPhoto(photo: Photo, w: number, h: number, gray: boolean, get: typeof fetch = fetch): Promise<Buffer> {
+  const res = await get(pickPreview(photo, w, h).url);
+  if (res.status === 403 || res.status === 404) throw new StaleLinkError(`preview ${res.status}`);
+  if (!res.ok) throw new Error(`preview ${res.status}`);
+  let img = sharp(Buffer.from(await res.arrayBuffer())).resize(w, h, { fit: "cover", position: sharp.strategy.attention });
+  if (gray) img = img.grayscale();
+  return img.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
+}
+
+// Scotty's bust on the avatar's gradient, standing on the bottom edge.
+export function scottySvg(w: number, h: number): string {
+  const s = Math.min((0.9 * w) / BUST.w, (0.9 * h) / BUST.h);
+  const x = (w - BUST.w * s) / 2 - BUST.x * s;
+  const y = h - BUST.h * s - BUST.y * s;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}">`
+    + `<defs><linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#c5c6c8"/></linearGradient>`
+    + `<clipPath id="crop"><rect x="${BUST.x}" y="${BUST.y}" width="${BUST.w}" height="${BUST.h}"/></clipPath></defs>`
+    + `<rect width="${w}" height="${h}" fill="url(#bg)"/>`
+    + `<g transform="translate(${x} ${y}) scale(${s})" clip-path="url(#crop)">${bust}</g></svg>`;
+}
+
+export function avatarSvg(size: number): string {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 320 320">${avatar}</svg>`;
+}
+
+export async function renderSvg(svg: string, gray: boolean): Promise<Buffer> {
+  let img = sharp(Buffer.from(svg));
+  if (gray) img = img.grayscale();
+  return img.png().toBuffer();
+}
