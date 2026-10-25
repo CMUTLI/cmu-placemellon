@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlaceMellon - Carnegie Mellon University</title>
+  <meta name="description" content="Placeholder images of Carnegie Mellon for mockups and prototypes: campus photos, Scotty and profile pictures at any size.">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700,700italic" rel="stylesheet" type="text/css">
+  <link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet" type="text/css">
+  <!-- Switch to cdn.jsdelivr.net/gh/CMUTLI/cmu-web-kit@0.1.0 once the kit is released -->
+  <link href="https://cmutli.github.io/cmu-web-kit/css/cmu-cms.css" rel="stylesheet" type="text/css">
+  <link href="docs.css" rel="stylesheet" type="text/css">
+  <link href="https://placemellon.andrew.cmu.edu/32?profile" rel="icon" type="image/png">
+</head>
+<!-- PlaceMellon's information page, published with GitHub Pages and
+     served at / by npm run dev. See the script at the end for where the
+     example images load from. -->
+<body class="no-js">
+<div id="container">
+  <header>
+    <div class="roof red invert">
+      <div>
+        <a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+        <button aria-label="toggle menu" aria-pressed="false" class="menu-btn" href="#nav"><b>&#8212;</b><b>&#8212;</b><b>&#8212;</b></button>
+      </div>
+    </div>
+    <div id="sitename">
+      <span class="sitetitle"><a href="index.html">PlaceMellon</a></span>
+      <h2>Placeholder images of Carnegie Mellon</h2>
+    </div>
+  </header>
+  <main id="content">
+    <div class="content wide"><div>
+      <div class="cmu-hero">
+        <div>
+          <h1>Carnegie Mellon, Any Size</h1>
+          <p class="cmu-lead">Put a PlaceMellon address in an image tag and get a CMU photo cropped to exactly that size. For mockups, prototypes and pages still waiting on their real photos.</p>
+          <div class="cmu-cta-row">
+            <a class="btn" href="#use">Use It</a>
+            <a class="cta" href="#options">See the Options</a>
+          </div>
+        </div>
+        <div class="cmu-hero-art cmu-hero-art--plain">
+          <figure class="image pm-figure">
+            <img src="img/bunsen-honeydew.jpg" alt="Dr. Bunsen Honeydew of the Muppets, whose head is a honeydew melon." width="720" height="540">
+            <figcaption>Named in honor of Dr. Bunsen Honeydew, distinguished alumnus of Carnegie Mellonhead University and pioneer of unexpectedly applied science. <span class="pm-credit">Photo:&nbsp;<a href="https://commons.wikimedia.org/wiki/File:Dr._Bunsen_Honeydew.png">MuppetsStudio</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC&nbsp;BY&nbsp;3.0</a>, cropped</span></figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <h2 id="use">Use It</h2>
+      <p>Give the width and height you want, in pixels, after the address:</p>
+      <pre class="pm-code"><code>&lt;img src="https://placemellon.andrew.cmu.edu/400/300" alt=""&gt;</code></pre>
+      <p>For a square, give one number: <code>/400</code> is 400&nbsp;by&nbsp;400. Sizes run from 1 to 2048.</p>
+      <ul class="cmu-checks">
+        <li><strong>The same size always gets the same photo</strong>, so your mockup looks the same every time you open it.</li>
+        <li><strong>Wide sizes get landscape photos</strong> and tall sizes get portrait ones, so less is cropped away.</li>
+        <li><strong>Photos are cropped around what's interesting</strong> in them, such as people and buildings.</li>
+      </ul>
+
+      <h2 id="options">Options</h2>
+      <p>Add options after a <code>?</code>, joined with <code>&amp;</code>, in any order: <code>/400/300?category=labs&amp;gray</code>.</p>
+      <table class="alternate cmu-full">
+        <thead><tr><th scope="col">Option</th><th scope="col">What It Does</th><th scope="col">Example</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="cmu-fit"><code>?category=</code></td>
+            <td>Only photos from one category: <code>campus</code>, <code>classrooms</code>, <code>labs</code> or <code>life</code>.</td>
+            <td class="cmu-fit"><img class="pm-thumb" src="https://placemellon.andrew.cmu.edu/160/100?category=classrooms" alt="A CMU classroom." width="160" height="100"></td>
+          </tr>
+          <tr>
+            <td class="cmu-fit"><code>?random</code></td>
+            <td>A different photo every time. A page shows one image per address, so number them for several on one page: <code>?random=1</code>, <code>?random=2</code>.</td>
+            <td class="cmu-fit"><img class="pm-thumb" src="https://placemellon.andrew.cmu.edu/160/100?random=1" alt="A random CMU photo." width="160" height="100"></td>
+          </tr>
+          <tr>
+            <td class="cmu-fit"><code>?gray</code></td>
+            <td>Grayscale. <code>?grayscale</code> works too, and so does <code>/g/</code> in front, as on placekitten: <code>/g/400/300</code>.</td>
+            <td class="cmu-fit"><img class="pm-thumb" src="https://placemellon.andrew.cmu.edu/160/100?gray" alt="A CMU photo in grayscale." width="160" height="100"></td>
+          </tr>
+          <tr>
+            <td class="cmu-fit"><code>?scotty</code></td>
+            <td>Scotty instead of a photo, standing on the bottom edge.</td>
+            <td class="cmu-fit"><img class="pm-thumb" src="https://placemellon.andrew.cmu.edu/160/100?scotty" alt="Scotty, CMU's Scottish terrier mascot." width="160" height="100"></td>
+          </tr>
+          <tr>
+            <td class="cmu-fit"><code>?profile</code></td>
+            <td>Scotty as a round profile picture, for people who don't have a photo yet. Always square: <code>/96?profile</code>.</td>
+            <td class="cmu-fit"><img src="https://placemellon.andrew.cmu.edu/96?profile" alt="Scotty in a round profile picture." width="96" height="96"></td>
+          </tr>
+        </tbody>
+      </table>
+      <p><code>?category</code> and <code>?random</code> choose photos, so they don't go with <code>?scotty</code> or <code>?profile</code>. A misspelled or unknown option gets an error that lists the right ones, rather than being ignored.</p>
+
+      <h2 id="categories">Categories</h2>
+      <div class="pm-gallery">
+        <figure><img src="https://placemellon.andrew.cmu.edu/480/320?category=campus" alt="A photo from the campus category." width="480" height="320"><figcaption><code>campus</code>: buildings and points of interest</figcaption></figure>
+        <figure><img src="https://placemellon.andrew.cmu.edu/480/320?category=classrooms" alt="A photo from the classrooms category." width="480" height="320"><figcaption><code>classrooms</code>: teaching and learning</figcaption></figure>
+        <figure><img src="https://placemellon.andrew.cmu.edu/480/320?category=labs" alt="A photo from the labs category." width="480" height="320"><figcaption><code>labs</code>: labs and research</figcaption></figure>
+        <figure><img src="https://placemellon.andrew.cmu.edu/480/320?category=life" alt="A photo from the life category." width="480" height="320"><figcaption><code>life</code>: student life</figcaption></figure>
+      </div>
+
+      <h2 id="about">About the Photos</h2>
+      <p>The photos come from <a href="https://cmu.widencollective.com/portals/iff7gdfg/CMUPhotographyPortal-Master">CMU Selects</a>, University Communications &amp; Marketing's collection of campus photography. CMU Selects says they're for "use by the Carnegie Mellon University community in university-related communications and marketing," so use PlaceMellon for CMU work. For a finished page, choose and credit a photo there.</p>
+      <p>Scotty comes from the <a href="https://www.cmu.edu/hr/">Office of Human Resources</a>' Scotty avatar.</p>
+      <div class="cmu-callout">
+        <p class="cmu-label">Which Photo Is This?</p>
+        <p>Each photo's response has an <code>X-Photo</code> header with its file name, so you can find it in CMU Selects.</p>
+      </div>
+    </div></div>
+  </main>
+  <footer class="grid column3 invert">
+    <div>
+      <p>Carnegie Mellon University<br>5000 Forbes Avenue<br>Pittsburgh, PA 15213</p>
+      <ul><li><a href="https://www.cmu.edu/legal/">Legal Info</a></li><li><a href="https://www.cmu.edu/">www.cmu.edu</a></li></ul>
+      <ul><li>&copy; 2026 Carnegie Mellon University</li></ul>
+    </div>
+    <div></div>
+    <div>
+      <nav id="nav">
+        <ul>
+        <li><a href="#use">Use It</a></li>
+        <li><a href="#options">Options</a></li>
+        <li><a href="#categories">Categories</a></li>
+        <li><a href="#about">About the Photos</a></li>
+        <li class="secondary"><a class="external" href="https://github.com/CMUTLI/cmu-placemellon">PlaceMellon on GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="https://www.cmu.edu/common/standard-v6/js/list.min.js"></script>
+<script src="https://www.cmu.edu/common/standard-v6/js/jquery-1.10.1.min.js"></script>
+<script src="https://www.cmu.edu/common/standard-v6/js/main.6.7.min.js"></script>
+<script>
+  // Examples load from the live service. Served by a PlaceMellon itself (as
+  // npm run dev does), they load from that one; ?base=URL picks another.
+  (function () {
+    var base = new URLSearchParams(location.search).get("base");
+    if (!base && location.hostname !== "cmutli.github.io" && location.protocol !== "file:") base = location.origin;
+    if (!base || base === "https://placemellon.andrew.cmu.edu") return;
+    document.querySelectorAll('img[src^="https://placemellon.andrew.cmu.edu/"], link[rel="icon"]').forEach(function (el) {
+      var attr = el.tagName === "LINK" ? "href" : "src";
+      el.setAttribute(attr, el.getAttribute(attr).replace("https://placemellon.andrew.cmu.edu", base));
+    });
+  })();
+</script>
+</body>
+</html>

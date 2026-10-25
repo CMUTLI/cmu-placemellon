@@ -1,25 +1,8 @@
 import express, { Request, Response } from "express";
+import path from "path";
 import { Catalog } from "./catalog";
 import { avatarSvg, MAX, renderPhoto, renderSvg, scottySvg, StaleLinkError } from "./render";
 import { PORTALS } from "./widen";
-
-const USAGE = `PlaceMellon: placeholder images of Carnegie Mellon
-
-  /{width}/{height}     a CMU photo, cropped to fit
-  /{size}               the same, square
-
-Options, in any order, e.g. /400/300?category=labs&gray:
-
-  ?category=NAME        only photos from ${Object.keys(PORTALS).join(", ")}
-  ?random               a different photo each time; ?random=1, ?random=2...
-                        keep several on one page from being the same
-  ?scotty               Scotty instead of a photo
-  ?profile              Scotty as a round profile picture (always square)
-  ?gray                 grayscale (or put /g in front: /g/400/300)
-
-Sizes run from 1 to ${MAX}. Wide sizes get landscape photos, tall sizes
-portrait ones, and the same size always gets the same photo.
-`;
 
 const OPTIONS = ["category", "random", "scotty", "profile", "gray", "grayscale"];
 
@@ -85,7 +68,11 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
   const app = express();
   const cache = new Lru(Number(process.env.CACHE_ENTRIES || 256));
 
-  app.get("/", (_req, res) => { res.type("text/plain").send(USAGE); });
+  // The information page lives elsewhere (GitHub Pages for now, maybe
+  // cmu.edu later). With DOCS_URL="", as in npm run dev, it's served here.
+  const docs = process.env.DOCS_URL ?? "https://cmutli.github.io/cmu-placemellon/";
+  if (docs) app.get("/", (_req, res) => res.redirect(302, docs));
+  else app.use(express.static(path.join(__dirname, "..", "docs"), { index: "index.html" }));
 
   app.get("/healthz", (_req, res) => {
     const categories = Object.fromEntries(Object.keys(PORTALS).map((c) => [c, catalog.count(c)]));

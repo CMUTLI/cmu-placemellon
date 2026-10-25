@@ -169,6 +169,19 @@ describe("routes", () => {
     await request(app).get("/g/50/80?gray&profile").expect(302).expect("Location", "/g/50?gray&profile");
   });
 
+  it("sends / to the information page, or serves it without DOCS_URL", async () => {
+    const catalog = await ready([photo("a")]);
+    await request(createApp(catalog, fakeFetch)).get("/").expect(302).expect("Location", "https://cmutli.github.io/cmu-placemellon/");
+    process.env.DOCS_URL = "";
+    try {
+      const res = await request(createApp(catalog, fakeFetch)).get("/").expect(200).expect("Content-Type", /html/);
+      expect(res.text).toContain("<title>PlaceMellon");
+      await request(createApp(catalog, fakeFetch)).get("/docs.css").expect(200);
+    } finally {
+      delete process.env.DOCS_URL;
+    }
+  });
+
   it("rejects bad sizes", async () => {
     const app = createApp(await ready([photo("a")]), fakeFetch);
     for (const path of ["/0/10", "/10/3000", "/0?profile", "/x/10?scotty", "/g/abc"]) await request(app).get(path).expect(400);

@@ -19,6 +19,11 @@ For example `/400/300?category=labs&gray`, `/600/200?scotty`, `/96?profile`.
 Unknown options and ones that don't go together (`?scotty&category=labs`)
 get a 400 that says why. `/healthz` gives photo counts and the last refresh.
 
+`/` redirects (302) to the information page, `DOCS_URL` (default
+https://cmutli.github.io/cmu-placemellon/, published from `docs/`). With
+`DOCS_URL=` (empty), as in `npm run dev`, the server serves `docs/` itself,
+and the page's examples load from that server.
+
 Sizes run from 1 to 2048. Wide sizes get landscape photos and tall sizes
 portrait ones; near-square sizes draw from all of them. The same size (and
 category) always gets the same photo (rendezvous hashing, so photos coming
