@@ -125,7 +125,7 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
       .send(out.body);
   }
 
-  const image = (gray: boolean) => (req: Request, res: Response) => {
+  const image = (gray: boolean) => (req: Request<{ w: string; h?: string }>, res: Response) => {
     const w = parseSize(req.params.w),
       h = req.params.h === undefined ? w : parseSize(req.params.h);
     if (w === null || h === null) {
