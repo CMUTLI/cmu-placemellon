@@ -41,8 +41,8 @@ Each request fetches the smallest preview that covers the size, crops it
 
 The portal endpoints are Widen's own, not a documented API, so they may change.
 
-Scotty (`assets/scotty-*.svg`) is traced from CMU Human Resources' Scotty
-avatar, https://www.cmu.edu/hr/images/scotty.png.
+Scotty (`assets/scotty-*.svg`) is traced from Ask Scotty's avatar,
+https://www.cmu.edu/hr/images/scotty.png.
 
 ## Develop
 
@@ -99,10 +99,9 @@ The code is under the BSD 3-Clause License (see `LICENSE`), copyright
 Carnegie Mellon University. It doesn't cover:
 
 * **Carnegie Mellon's names and marks**, including the Scotty images in
-  `assets/scotty-*.svg` (traced from the Office of Human Resources' Scotty
-  avatar). The license grants no rights to them, and its third clause
-  bars using the university's name to endorse or promote work derived from
-  this code.
+  `assets/scotty-*.svg` (traced from Ask Scotty's avatar). The license
+  grants no rights to them, and its third clause bars using the
+  university's name to endorse or promote work derived from this code.
 * **The photos.** They aren't in this repository; the service fetches them
   from University Communications & Marketing's CMU Selects, under its terms.
 * **`docs/images/bunsen-honeydew.jpg`**, by MuppetsStudio, under
