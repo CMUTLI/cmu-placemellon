@@ -75,7 +75,9 @@ async function sectionAssets(sectionId: string): Promise<WidenAsset[]> {
 export async function listPhotos(portals = PORTALS): Promise<Photo[]> {
   const byId = new Map<string, Photo>();
   for (const [category, code] of Object.entries(portals)) {
-    const { items } = await getJson<{ items: WidenSection[] }>(`${BASE}/view/sections/portal/${code}`);
+    const { items } = await getJson<{ items: WidenSection[] }>(
+      `${BASE}/view/sections/portal/${code}`,
+    );
     for (const s of items.filter((s) => s.type === "Assets")) {
       for (const a of await sectionAssets(s.id)) {
         const p = byId.get(a.external_id) ?? toPhoto(a);

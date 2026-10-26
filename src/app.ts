@@ -15,16 +15,35 @@ export interface Options {
 }
 
 export class OptionError extends Error {
-  constructor(public status: number, message: string) { super(message); }
+  constructor(
+    public status: number,
+    message: string,
+  ) {
+    super(message);
+  }
 }
 
 // Reads the query string; rejects unknown options and ones that don't go together
-export function parseOptions(query: Record<string, unknown>, w: number, h: number, gray = false): Options {
+export function parseOptions(
+  query: Record<string, unknown>,
+  _w: number,
+  _h: number,
+  gray = false,
+): Options {
   const unknown = Object.keys(query).filter((k) => !OPTIONS.includes(k));
-  if (unknown.length) throw new OptionError(400, `Unknown option ?${unknown[0]}. Options: ${OPTIONS.map((o) => "?" + o).join(", ")}.`);
+  if (unknown.length)
+    throw new OptionError(
+      400,
+      `Unknown option ?${unknown[0]}. Options: ${OPTIONS.map((o) => "?" + o).join(", ")}.`,
+    );
   const category = query.category;
-  if (category !== undefined && typeof category !== "string") throw new OptionError(400, "Give ?category once.");
-  if (category !== undefined && !(category in PORTALS)) throw new OptionError(404, `No category "${category}". Try ${Object.keys(PORTALS).join(", ")}.`);
+  if (category !== undefined && typeof category !== "string")
+    throw new OptionError(400, "Give ?category once.");
+  if (category !== undefined && !(category in PORTALS))
+    throw new OptionError(
+      404,
+      `No category "${category}". Try ${Object.keys(PORTALS).join(", ")}.`,
+    );
   const o: Options = {
     category,
     random: "random" in query,
@@ -33,7 +52,11 @@ export function parseOptions(query: Record<string, unknown>, w: number, h: numbe
     gray: gray || "gray" in query || "grayscale" in query,
   };
   if (o.scotty && o.profile) throw new OptionError(400, "Pick ?scotty or ?profile, not both.");
-  if ((o.scotty || o.profile) && (o.category || o.random)) throw new OptionError(400, "?category and ?random choose photos, so they don't go with ?scotty or ?profile.");
+  if ((o.scotty || o.profile) && (o.category || o.random))
+    throw new OptionError(
+      400,
+      "?category and ?random choose photos, so they don't go with ?scotty or ?profile.",
+    );
   return o;
 }
 
@@ -49,7 +72,10 @@ class Lru {
   constructor(private max: number) {}
   get(k: string) {
     const v = this.map.get(k);
-    if (v) { this.map.delete(k); this.map.set(k, v); }
+    if (v) {
+      this.map.delete(k);
+      this.map.set(k, v);
+    }
     return v;
   }
   set(k: string, v: Rendered) {
@@ -74,7 +100,9 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
 
   app.get("/healthz", (_req, res) => {
     const categories = Object.fromEntries(Object.keys(PORTALS).map((c) => [c, catalog.count(c)]));
-    res.status(catalog.photos.length ? 200 : 503).json({ photos: catalog.photos.length, categories, refreshedAt: catalog.refreshedAt });
+    res
+      .status(catalog.photos.length ? 200 : 503)
+      .json({ photos: catalog.photos.length, categories, refreshedAt: catalog.refreshedAt });
   });
 
   // Random images skip the cache, ours and everyone else's
@@ -91,11 +119,15 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
       if (key) cache.set(key, out);
     }
     if (out.photo) res.set("X-Photo", out.photo);
-    res.set("Cache-Control", key ? "public, max-age=86400" : "no-store").type(out.type).send(out.body);
+    res
+      .set("Cache-Control", key ? "public, max-age=86400" : "no-store")
+      .type(out.type)
+      .send(out.body);
   }
 
   const image = (gray: boolean) => (req: Request, res: Response) => {
-    const w = parseSize(req.params.w), h = req.params.h === undefined ? w : parseSize(req.params.h);
+    const w = parseSize(req.params.w),
+      h = req.params.h === undefined ? w : parseSize(req.params.h);
     if (w === null || h === null) {
       res.status(400).type("text/plain").send(`Sizes must be whole numbers from 1 to ${MAX}.\n`);
       return;
@@ -105,7 +137,10 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
       o = parseOptions(req.query, w, h, gray);
     } catch (e) {
       if (!(e instanceof OptionError)) throw e;
-      res.status(e.status).type("text/plain").send(e.message + "\n");
+      res
+        .status(e.status)
+        .type("text/plain")
+        .send(e.message + "\n");
       return;
     }
 

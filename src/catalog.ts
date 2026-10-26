@@ -70,14 +70,20 @@ export class Catalog {
   // each photo against the size and takes the best, so adding or removing a
   // photo only moves the sizes that photo wins or loses.
   pick(w: number, h: number, random = false, category?: string): Photo | null {
-    const inCategory = category ? this.photos.filter((p) => p.categories.includes(category)) : this.photos;
+    const inCategory = category
+      ? this.photos.filter((p) => p.categories.includes(category))
+      : this.photos;
     const pool = sameOrientation(inCategory, w / h);
     if (!pool.length) return null;
     if (random) return pool[Math.floor(Math.random() * pool.length)];
-    let best = pool[0], top = -1;
+    let best = pool[0],
+      top = -1;
     for (const p of pool) {
       const s = hash(`${w}x${h}:${p.id}`);
-      if (s > top) { top = s; best = p; }
+      if (s > top) {
+        top = s;
+        best = p;
+      }
     }
     return best;
   }
@@ -86,9 +92,12 @@ export class Catalog {
 // Wide sizes get landscape photos and tall sizes portrait ones. The portals
 // have almost no square photos, so near-square sizes draw from everything.
 export function sameOrientation(photos: Photo[], ratio: number): Photo[] {
-  const pool = ratio > 1.1 ? photos.filter((p) => p.aspect > 1.1)
-    : ratio < 0.9 ? photos.filter((p) => p.aspect < 0.9)
-    : photos;
+  const pool =
+    ratio > 1.1
+      ? photos.filter((p) => p.aspect > 1.1)
+      : ratio < 0.9
+        ? photos.filter((p) => p.aspect < 0.9)
+        : photos;
   return pool.length ? pool : photos;
 }
 

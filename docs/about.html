@@ -1,76 +1,155 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About - PlaceMellon - Carnegie Mellon University</title>
-  <meta name="description" content="Where PlaceMellon's photos come from, how to find one, and how the service works.">
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700,700italic" rel="stylesheet" type="text/css">
-  <link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet" type="text/css">
-  <!-- Switch to cdn.jsdelivr.net/gh/CMUTLI/cmu-web-kit@0.1.0 once the kit is released -->
-  <link href="https://cmutli.github.io/cmu-web-kit/css/cmu-cms.css" rel="stylesheet" type="text/css">
-  <link href="//www.cmu.edu/favicon.ico" rel="icon">
-  <link href="//www.cmu.edu/favicon-152.png" rel="apple-touch-icon-precomposed">
-  <meta content="#9f0000" name="msapplication-TileColor">
-  <meta content="//www.cmu.edu/favicon-144.png" name="msapplication-TileImage">
-</head>
-<body class="no-js">
-<div id="container">
-  <header>
-    <div class="roof red invert">
-      <div>
-        <a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
-        <button aria-label="toggle menu" aria-pressed="false" class="menu-btn" href="#nav"><b>&#8212;</b><b>&#8212;</b><b>&#8212;</b></button>
-      </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About - PlaceMellon - Carnegie Mellon University</title>
+    <meta
+      name="description"
+      content="Where PlaceMellon's photos come from, how to find one, and how the service works."
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700,700italic"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css"
+      media="screen"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <!-- Switch to cdn.jsdelivr.net/gh/CMUTLI/cmu-web-kit@0.1.0 once the kit is released -->
+    <link
+      href="https://cmutli.github.io/cmu-web-kit/css/cmu-cms.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link href="//www.cmu.edu/favicon.ico" rel="icon" />
+    <link href="//www.cmu.edu/favicon-152.png" rel="apple-touch-icon-precomposed" />
+    <meta content="#9f0000" name="msapplication-TileColor" />
+    <meta content="//www.cmu.edu/favicon-144.png" name="msapplication-TileImage" />
+  </head>
+  <body class="no-js">
+    <div id="container">
+      <header>
+        <div class="roof red invert">
+          <div>
+            <a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+            <button aria-label="toggle menu" aria-pressed="false" class="menu-btn" href="#nav"
+              ><b>&#8212;</b><b>&#8212;</b><b>&#8212;</b></button
+            >
+          </div>
+        </div>
+        <div id="sitename">
+          <span class="sitetitle"><a href="index.html">PlaceMellon</a></span>
+          <h2>Placeholder images of Carnegie Mellon</h2>
+        </div>
+      </header>
+      <main id="content">
+        <div class="breadcrumbs">
+          <a href="index.html">PlaceMellon</a>&nbsp;&rsaquo;&nbsp;About
+        </div>
+        <div class="content wide"
+          ><div>
+            <h1>About PlaceMellon</h1>
+            <p class="cmu-lead"
+              >PlaceMellon fills Carnegie Mellon mockups, prototypes, and unfinished pages with real
+              CMU photos at whatever size the layout needs.</p
+            >
+            <h2 class="rule-top" id="photos">Where the Photos Come From</h2>
+            <p
+              >The photos come from
+              <a href="https://cmu.widencollective.com/portals/iff7gdfg/CMUPhotographyPortal-Master"
+                >CMU Selects</a
+              >, University Communications &amp; Marketing's collection of campus photography. CMU
+              Selects says they're for "use by the Carnegie Mellon University community in
+              university-related communications and marketing," so use PlaceMellon for CMU work. For
+              a finished page, choose and credit a photo there.</p
+            >
+            <p
+              >The Scotty in <code>?scotty</code> and <code>?profile</code> is traced from the
+              avatar of the
+              <a href="https://www.cmu.edu/hr/news/2024/02-26-employee-experience.html"
+                >Scotty chatbot</a
+              >.</p
+            >
+            <div class="cmu-callout">
+              <p class="cmu-label">Which Photo Is This?</p>
+              <p
+                >Each photo's response has an <code>X-Photo</code> header with its file name, so you
+                can find it in CMU Selects.</p
+              >
+            </div>
+            <h2 class="rule-top" id="how">How It Works</h2>
+            <p
+              >PlaceMellon keeps a list of the CMU Selects photos and refreshes it every few hours.
+              When you ask for a size, it fetches that photo's preview from CMU Selects, crops it,
+              and sends it to you. It doesn't keep copies of the photos.</p
+            >
+            <p
+              >PlaceMellon first narrows the list to photos shaped like your size: landscape for
+              wide sizes, portrait for tall ones, and any photo for sizes close to square. It then
+              picks one by rendezvous hashing, scoring each photo by your size and its ID and taking
+              the highest. So the same size always gets the same photo, and when University
+              Communications &amp; Marketing adds or removes photos, nearly every size keeps the
+              photo it had. With <code>?random</code>, it skips the scoring and picks any photo of
+              the right shape.</p
+            >
+            <p
+              >To crop, it fetches the smallest preview that covers your size and keeps the most
+              interesting part of the photo, where there's the most detail and color, rather than
+              simply the middle. Scotty is drawn from vector shapes, so it stays sharp at any size.
+              It holds recently made images in memory for a short while (nothing is saved to disk),
+              and browsers may keep each one for a day, so repeat requests are fast. Random photos
+              are never held.</p
+            >
+            <p
+              >PlaceMellon is a small TypeScript app built with Express and sharp, and its code is
+              public. The
+              <a class="external" href="https://github.com/CMUTLI/cmu-placemellon"
+                >GitHub repository</a
+              >
+              has the code, its tests, and documentation. To report a problem or suggest a change,
+              open an issue or send a pull request.</p
+            >
+          </div></div
+        >
+      </main>
+      <footer class="grid column3 invert">
+        <div>
+          <p
+            >PlaceMellon<br />Carnegie Mellon University<br />5000 Forbes Avenue<br />Pittsburgh, PA
+            15213</p
+          >
+          <ul
+            ><li><a href="https://www.cmu.edu/legal/">Legal Info</a></li
+            ><li><a href="https://www.cmu.edu/">www.cmu.edu</a></li></ul
+          >
+          <ul
+            ><li>&copy; 2026 Carnegie Mellon University</li></ul
+          >
+        </div>
+        <div></div>
+        <div>
+          <nav id="nav">
+            <ul>
+              <li><a href="builder.html">Builder</a></li>
+              <li><a href="options.html">Options</a></li>
+              <li class="active"><a href="about.html">About</a></li>
+              <li class="secondary"
+                ><a class="external" href="https://github.com/CMUTLI/cmu-placemellon"
+                  >PlaceMellon on GitHub</a
+                ></li
+              >
+            </ul>
+          </nav>
+        </div>
+      </footer>
     </div>
-    <div id="sitename">
-      <span class="sitetitle"><a href="index.html">PlaceMellon</a></span>
-      <h2>Placeholder images of Carnegie Mellon</h2>
-    </div>
-  </header>
-  <main id="content">
-    <div class="breadcrumbs">
-      <a href="index.html">PlaceMellon</a>&nbsp;&rsaquo;&nbsp;About
-    </div>
-    <div class="content wide"><div>
-      <h1>About PlaceMellon</h1>
-      <p class="cmu-lead">PlaceMellon fills Carnegie Mellon mockups, prototypes, and unfinished pages with real CMU photos at whatever size the layout needs.</p>
-      <h2 class="rule-top" id="photos">Where the Photos Come From</h2>
-      <p>The photos come from <a href="https://cmu.widencollective.com/portals/iff7gdfg/CMUPhotographyPortal-Master">CMU Selects</a>, University Communications &amp; Marketing's collection of campus photography. CMU Selects says they're for "use by the Carnegie Mellon University community in university-related communications and marketing," so use PlaceMellon for CMU work. For a finished page, choose and credit a photo there.</p>
-      <p>The Scotty in <code>?scotty</code> and <code>?profile</code> is traced from the avatar of the <a href="https://www.cmu.edu/hr/news/2024/02-26-employee-experience.html">Scotty chatbot</a>.</p>
-      <div class="cmu-callout">
-        <p class="cmu-label">Which Photo Is This?</p>
-        <p>Each photo's response has an <code>X-Photo</code> header with its file name, so you can find it in CMU Selects.</p>
-      </div>
-      <h2 class="rule-top" id="how">How It Works</h2>
-      <p>PlaceMellon keeps a list of the CMU Selects photos and refreshes it every few hours. When you ask for a size, it fetches that photo's preview from CMU Selects, crops it, and sends it to you. It doesn't keep copies of the photos.</p>
-      <p>PlaceMellon first narrows the list to photos shaped like your size: landscape for wide sizes, portrait for tall ones, and any photo for sizes close to square. It then picks one by rendezvous hashing, scoring each photo by your size and its ID and taking the highest. So the same size always gets the same photo, and when University Communications &amp; Marketing adds or removes photos, nearly every size keeps the photo it had. With <code>?random</code>, it skips the scoring and picks any photo of the right shape.</p>
-      <p>To crop, it fetches the smallest preview that covers your size and keeps the most interesting part of the photo, where there's the most detail and color, rather than simply the middle. Scotty is drawn from vector shapes, so it stays sharp at any size. It holds recently made images in memory for a short while (nothing is saved to disk), and browsers may keep each one for a day, so repeat requests are fast. Random photos are never held.</p>
-      <p>PlaceMellon is a small TypeScript app built with Express and sharp, and its code is public. The <a class="external" href="https://github.com/CMUTLI/cmu-placemellon">GitHub repository</a> has the code, its tests, and documentation. To report a problem or suggest a change, open an issue or send a pull request.</p>
-    </div></div>
-  </main>
-  <footer class="grid column3 invert">
-    <div>
-      <p>PlaceMellon<br>Carnegie Mellon University<br>5000 Forbes Avenue<br>Pittsburgh, PA 15213</p>
-      <ul><li><a href="https://www.cmu.edu/legal/">Legal Info</a></li><li><a href="https://www.cmu.edu/">www.cmu.edu</a></li></ul>
-      <ul><li>&copy; 2026 Carnegie Mellon University</li></ul>
-    </div>
-    <div></div>
-    <div>
-      <nav id="nav">
-        <ul>
-        <li><a href="builder.html">Builder</a></li>
-        <li><a href="options.html">Options</a></li>
-        <li class="active"><a href="about.html">About</a></li>
-        <li class="secondary"><a class="external" href="https://github.com/CMUTLI/cmu-placemellon">PlaceMellon on GitHub</a></li>
-        </ul>
-      </nav>
-    </div>
-  </footer>
-</div>
-<script src="https://www.cmu.edu/common/standard-v6/js/list.min.js"></script>
-<script src="https://www.cmu.edu/common/standard-v6/js/jquery-1.10.1.min.js"></script>
-<script src="https://www.cmu.edu/common/standard-v6/js/main.6.7.min.js"></script>
-<script src="js/docs.js"></script>
-</body>
+    <script src="https://www.cmu.edu/common/standard-v6/js/list.min.js"></script>
+    <script src="https://www.cmu.edu/common/standard-v6/js/jquery-1.10.1.min.js"></script>
+    <script src="https://www.cmu.edu/common/standard-v6/js/main.6.7.min.js"></script>
+    <script src="js/docs.js"></script>
+  </body>
 </html>

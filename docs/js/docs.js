@@ -3,7 +3,8 @@
 var PM_LIVE = "https://placemellon.andrew.cmu.edu";
 var PM_BASE = (function () {
   var base = new URLSearchParams(location.search).get("base");
-  if (!base && location.hostname !== "cmutli.github.io" && location.protocol !== "file:") base = location.origin;
+  if (!base && location.hostname !== "cmutli.github.io" && location.protocol !== "file:")
+    base = location.origin;
   return base || PM_LIVE;
 })();
 (function () {

@@ -26,8 +26,12 @@
   "postCreateCommand": "npm ci",
   "customizations": {
     "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
       "settings": {
-        "js/ts.tsdk.path": "node_modules/typescript/lib"
+        "js/ts.tsdk.path": "node_modules/typescript/lib",
+        "[typescript][javascript][json][jsonc][html][markdown]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
       }
     }
   }

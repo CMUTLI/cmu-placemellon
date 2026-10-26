@@ -1,4 +1,5 @@
 import sharp from "sharp";
+import type { Stream } from "node:stream";
 import request from "supertest";
 import { describe, expect, it } from "vitest";
 import { createApp, parseSize } from "../src/app";
@@ -11,14 +12,21 @@ const photo = (id: string, expires = 1792969200, aspect = 1.5, categories = ["ca
   filename: `${id}.jpg`,
   aspect,
   categories,
-  previews: [300, 600, 2048].map((size) => ({ size, url: `https://cdn.test/${id}/${size}?sig.expires=${expires}` })),
+  previews: [300, 600, 2048].map((size) => ({
+    size,
+    url: `https://cdn.test/${id}/${size}?sig.expires=${expires}`,
+  })),
 });
 
-const jpeg = sharp({ create: { width: 600, height: 400, channels: 3, background: "#c41230" } }).jpeg().toBuffer();
+const jpeg = sharp({ create: { width: 600, height: 400, channels: 3, background: "#c41230" } })
+  .jpeg()
+  .toBuffer();
 
 // Fake fetch: serves a red JPEG, or 403 for links containing "stale"
 const fakeFetch = (async (url: string) =>
-  url.includes("stale") ? new Response(null, { status: 403 }) : new Response(await jpeg)) as unknown as typeof fetch;
+  url.includes("stale")
+    ? new Response(null, { status: 403 })
+    : new Response(await jpeg)) as unknown as typeof fetch;
 
 async function ready(photos: Photo[] | (() => Photo[])) {
   const catalog = new Catalog(async () => (typeof photos === "function" ? photos() : photos));
@@ -27,7 +35,7 @@ async function ready(photos: Photo[] | (() => Photo[])) {
   return catalog;
 }
 
-const binary = (res: any, cb: any) => {
+const binary = (res: Stream, cb: (error: Error | null, body: Buffer) => void) => {
   const chunks: Buffer[] = [];
   res.on("data", (c: Buffer) => chunks.push(c));
   res.on("end", () => cb(null, Buffer.concat(chunks)));
@@ -51,9 +59,16 @@ describe("pickPreview", () => {
 
 describe("widen", () => {
   it("skips videos and sorts previews", () => {
-    const base = { external_id: "x", filename: "x.jpg", image_previews: { thumbnails: { "600px": "u6", "125px": "u1" } } };
+    const base = {
+      external_id: "x",
+      filename: "x.jpg",
+      image_previews: { thumbnails: { "600px": "u6", "125px": "u1" } },
+    };
     expect(toPhoto({ ...base, file_properties: { format_type: "video" } })).toBeNull();
-    const p = toPhoto({ ...base, file_properties: { format_type: "image", image_properties: { aspect_ratio: 1.5 } } });
+    const p = toPhoto({
+      ...base,
+      file_properties: { format_type: "image", image_properties: { aspect_ratio: 1.5 } },
+    });
     expect(p?.previews.map((v) => v.size)).toEqual([125, 600]);
   });
 
@@ -90,14 +105,21 @@ describe("pick", () => {
 
   it("picks at random on request", async () => {
     const c = await ready(ids.map((id) => photo(id)));
-    expect(new Set(Array.from({ length: 40 }, () => c.pick(300, 200, true)!.id)).size).toBeGreaterThan(5);
+    expect(
+      new Set(Array.from({ length: 40 }, () => c.pick(300, 200, true)!.id)).size,
+    ).toBeGreaterThan(5);
   });
 });
 
 describe("routes", () => {
   it("crops a photo to size, the same photo each time", async () => {
     const app = createApp(await ready([photo("a"), photo("b"), photo("c")]), fakeFetch);
-    const res = await request(app).get("/250/100").buffer(true).parse(binary).expect(200).expect("Content-Type", /jpeg/);
+    const res = await request(app)
+      .get("/250/100")
+      .buffer(true)
+      .parse(binary)
+      .expect(200)
+      .expect("Content-Type", /jpeg/);
     expect(await sharp(res.body).metadata()).toMatchObject({ width: 250, height: 100 });
     const again = await request(app).get("/250/100").expect(200);
     expect(again.headers["x-photo"]).toBe(res.headers["x-photo"]);
@@ -120,25 +142,48 @@ describe("routes", () => {
 
   it("serves ?scotty and ?profile as PNG at the asked size", async () => {
     const app = createApp(await ready([photo("a")]), fakeFetch);
-    for (const [path, w, h] of [["/320/180?scotty", 320, 180], ["/g/90/160?scotty", 90, 160], ["/64?profile", 64, 64], ["/48/48?profile&grayscale", 48, 48]] as const) {
-      const res = await request(app).get(path).buffer(true).parse(binary).expect(200).expect("Content-Type", /png/);
+    for (const [path, w, h] of [
+      ["/320/180?scotty", 320, 180],
+      ["/g/90/160?scotty", 90, 160],
+      ["/64?profile", 64, 64],
+      ["/48/48?profile&grayscale", 48, 48],
+    ] as const) {
+      const res = await request(app)
+        .get(path)
+        .buffer(true)
+        .parse(binary)
+        .expect(200)
+        .expect("Content-Type", /png/);
       expect(await sharp(res.body).metadata(), path).toMatchObject({ width: w, height: h });
     }
   });
 
   it("doesn't cache ?random, whatever its value", async () => {
-    const app = createApp(await ready(Array.from({ length: 30 }, (_, i) => photo(`p${i}`))), fakeFetch);
+    const app = createApp(
+      await ready(Array.from({ length: 30 }, (_, i) => photo(`p${i}`))),
+      fakeFetch,
+    );
     const seen = new Set<string>();
     for (let i = 0; i < 10; i++) {
-      const res = await request(app).get(`/60/40?random=${i % 2}`).expect(200).expect("Cache-Control", "no-store");
+      const res = await request(app)
+        .get(`/60/40?random=${i % 2}`)
+        .expect(200)
+        .expect("Cache-Control", "no-store");
       seen.add(res.headers["x-photo"]);
     }
     expect(seen.size).toBeGreaterThan(1);
   });
 
   it("narrows to a ?category, in color or gray", async () => {
-    const app = createApp(await ready([photo("q", 1, 1.5, ["campus"]), photo("l", 1, 1.5, ["labs", "life"])]), fakeFetch);
-    for (const [path, want] of [["/90/60?category=campus", "q.jpg"], ["/90/60?category=labs", "l.jpg"], ["/g/90/60?category=life&random", "l.jpg"]]) {
+    const app = createApp(
+      await ready([photo("q", 1, 1.5, ["campus"]), photo("l", 1, 1.5, ["labs", "life"])]),
+      fakeFetch,
+    );
+    for (const [path, want] of [
+      ["/90/60?category=campus", "q.jpg"],
+      ["/90/60?category=labs", "l.jpg"],
+      ["/g/90/60?category=life&random", "l.jpg"],
+    ]) {
       const res = await request(app).get(path).expect(200);
       expect(res.headers["x-photo"], path).toBe(want);
     }
@@ -166,15 +211,24 @@ describe("routes", () => {
   it("redirects a non-square ?profile to the smaller square", async () => {
     const app = createApp(await ready([photo("a")]), fakeFetch);
     await request(app).get("/96/64?profile").expect(302).expect("Location", "/64?profile");
-    await request(app).get("/g/50/80?gray&profile").expect(302).expect("Location", "/g/50?gray&profile");
+    await request(app)
+      .get("/g/50/80?gray&profile")
+      .expect(302)
+      .expect("Location", "/g/50?gray&profile");
   });
 
   it("sends / to the information page, or serves it without DOCS_URL", async () => {
     const catalog = await ready([photo("a")]);
-    await request(createApp(catalog, fakeFetch)).get("/").expect(302).expect("Location", "https://cmutli.github.io/cmu-placemellon/");
+    await request(createApp(catalog, fakeFetch))
+      .get("/")
+      .expect(302)
+      .expect("Location", "https://cmutli.github.io/cmu-placemellon/");
     process.env.DOCS_URL = "";
     try {
-      const res = await request(createApp(catalog, fakeFetch)).get("/").expect(200).expect("Content-Type", /html/);
+      const res = await request(createApp(catalog, fakeFetch))
+        .get("/")
+        .expect(200)
+        .expect("Content-Type", /html/);
       expect(res.text).toContain("<title>PlaceMellon");
       await request(createApp(catalog, fakeFetch)).get("/js/docs.js").expect(200);
     } finally {
@@ -184,7 +238,8 @@ describe("routes", () => {
 
   it("rejects bad sizes", async () => {
     const app = createApp(await ready([photo("a")]), fakeFetch);
-    for (const path of ["/0/10", "/10/3000", "/0?profile", "/x/10?scotty", "/g/abc"]) await request(app).get(path).expect(400);
+    for (const path of ["/0/10", "/10/3000", "/0?profile", "/x/10?scotty", "/g/abc"])
+      await request(app).get(path).expect(400);
   });
 
   it("re-lists once when preview links have expired", async () => {
