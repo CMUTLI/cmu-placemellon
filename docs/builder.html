@@ -15,9 +15,6 @@
   <meta content="#9f0000" name="msapplication-TileColor">
   <meta content="//www.cmu.edu/favicon-144.png" name="msapplication-TileImage">
 </head>
-<!-- PlaceMellon's information page, published with GitHub Pages and
-     served at / by npm run dev. See the script at the end for where the
-     example images load from. -->
 <body class="no-js cmu-app">
 <div id="container">
   <header>
@@ -43,50 +40,42 @@
         <div class="cmu-split">
         <div>
           <fieldset>
-            <legend>Size</legend>
-            <label for="pm-width">Width</label>
-            <input type="text" inputmode="numeric" id="pm-width" value="720" autocomplete="off" aria-describedby="pm-size-hint">
-            <label for="pm-height">Height</label>
-            <input type="text" inputmode="numeric" id="pm-height" value="480" autocomplete="off" aria-describedby="pm-size-hint">
+            <legend class="cmu-label">Size</legend>
+            <div class="cmu-field-row">
+              <div><label for="pm-width">Width</label><input type="text" inputmode="numeric" id="pm-width" value="720" autocomplete="off" aria-describedby="pm-size-hint"></div>
+              <span aria-hidden="true">&times;</span>
+              <div><label for="pm-height">Height</label><input type="text" inputmode="numeric" id="pm-height" value="480" autocomplete="off" aria-describedby="pm-size-hint"></div>
+            </div>
             <p class="cmu-hint" id="pm-size-hint">In pixels, from 1 to 2048. Leave the height empty for a square.</p>
           </fieldset>
           <fieldset>
-            <legend>Image</legend>
+            <legend class="cmu-label">Image</legend>
             <ul>
               <li><input type="radio" name="pm-kind" id="pm-kind-photo" value="photo" checked><label for="pm-kind-photo">A CMU Photo</label></li>
               <li><input type="radio" name="pm-kind" id="pm-kind-scotty" value="scotty"><label for="pm-kind-scotty">Scotty</label></li>
               <li><input type="radio" name="pm-kind" id="pm-kind-profile" value="profile"><label for="pm-kind-profile">Round Scotty Profile Picture</label></li>
             </ul>
-          </fieldset>
-          <fieldset id="pm-photo-options">
-            <legend>Photo</legend>
-            <label for="pm-category">Category</label>
-            <select id="pm-category">
+            <label for="pm-category" data-pm-photo>Category</label>
+            <select id="pm-category" data-pm-photo>
               <option value="">Any</option>
               <option value="campus" selected>Campus</option>
               <option value="classrooms">Classrooms</option>
               <option value="labs">Labs</option>
               <option value="life">Life</option>
             </select>
-            <ul>
+            <ul data-pm-photo>
               <li><input type="checkbox" id="pm-random" aria-describedby="pm-random-hint"><label for="pm-random">Random Photo</label></li>
             </ul>
-            <p class="cmu-hint" id="pm-random-hint">A different photo each time the address loads, instead of the same one for this size.</p>
+            <p class="cmu-hint" id="pm-random-hint" data-pm-photo>A different photo each time the address loads, instead of the same one for this size.</p>
           </fieldset>
           <fieldset>
-            <legend>Color</legend>
+            <legend class="cmu-label">Color</legend>
             <ul>
               <li><input type="checkbox" id="pm-gray"><label for="pm-gray">Grayscale</label></li>
             </ul>
           </fieldset>
         </div><div>
-          <h2>Address</h2>
-          <pre class="cmu-snippet cmu-snippet--wrap"><code id="pm-url"></code></pre>
-          <p><button type="button" class="btn" data-cmu-copy="#pm-url">Copy Address</button></p>
-          <h2>HTML</h2>
-          <pre class="cmu-snippet cmu-snippet--wrap"><code id="pm-html"></code></pre>
-          <p><button type="button" class="btn" data-cmu-copy="#pm-html">Copy HTML</button></p>
-          <h2>Preview</h2>
+          <p class="cmu-label">Preview</p>
           <figure class="image">
             <img id="pm-preview" alt="Preview of the placeholder image.">
             <figcaption id="pm-preview-note" hidden></figcaption>
@@ -94,6 +83,12 @@
           <div id="pm-another-row" hidden>
             <button type="button" class="btn ghost" id="pm-another">Show Another Photo</button>
           </div>
+          <p class="cmu-label">Address</p>
+          <pre class="cmu-snippet cmu-snippet--wrap"><code id="pm-url"></code></pre>
+          <p><button type="button" class="btn" data-cmu-copy="#pm-url">Copy Address</button></p>
+          <p class="cmu-label">HTML</p>
+          <pre class="cmu-snippet cmu-snippet--wrap"><code id="pm-html"></code></pre>
+          <p><button type="button" class="btn" data-cmu-copy="#pm-html">Copy HTML</button></p>
         </div>
         </div>
       </form>
@@ -122,7 +117,7 @@
 <script src="https://www.cmu.edu/common/standard-v6/js/jquery-1.10.1.min.js"></script>
 <script src="https://www.cmu.edu/common/standard-v6/js/main.6.7.min.js"></script>
 <script src="https://cmutli.github.io/cmu-web-kit/js/cmu-app.js"></script>
-<script src="docs.js"></script>
-<script src="builder.js"></script>
+<script src="js/docs.js"></script>
+<script src="js/builder.js"></script>
 </body>
 </html>

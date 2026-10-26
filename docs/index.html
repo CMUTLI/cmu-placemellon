@@ -4,19 +4,16 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PlaceMellon - Carnegie Mellon University</title>
-  <meta name="description" content="Placeholder images of Carnegie Mellon for mockups and prototypes: campus photos, Scotty and profile pictures at any size.">
+  <meta name="description" content="Placeholder images of Carnegie Mellon for mockups and prototypes: campus photos, Scotty, and profile pictures at any size.">
   <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700,700italic" rel="stylesheet" type="text/css">
   <link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet" type="text/css">
-  <!-- Switch to cdn.jsdelivr.net/gh/CMUTLI/cmu-web-kit@0.1.0 once the kit is released -->
+  <!-- TODO: Switch to cdn.jsdelivr.net/gh/CMUTLI/cmu-web-kit@0.1.0 once the kit is released -->
   <link href="https://cmutli.github.io/cmu-web-kit/css/cmu-cms.css" rel="stylesheet" type="text/css">
   <link href="//www.cmu.edu/favicon.ico" rel="icon">
   <link href="//www.cmu.edu/favicon-152.png" rel="apple-touch-icon-precomposed">
   <meta content="#9f0000" name="msapplication-TileColor">
   <meta content="//www.cmu.edu/favicon-144.png" name="msapplication-TileImage">
 </head>
-<!-- PlaceMellon's information page, published with GitHub Pages and
-     served at / by npm run dev. See the script at the end for where the
-     example images load from. -->
 <body class="no-js">
 <div id="container">
   <header>
@@ -36,7 +33,7 @@
       <div class="cmu-hero">
         <div>
           <h1>From Here, Any Dimension Is Possible</h1>
-          <p class="cmu-lead">Put a PlaceMellon address in an image tag and get a CMU photo cropped to exactly that size. For mockups, prototypes and pages still waiting on their real photos.</p>
+          <p class="cmu-lead">Put a PlaceMellon address in an image tag and get a CMU photo cropped to exactly that size. For mockups, prototypes, and pages still waiting on their real photos.</p>
           <div class="cmu-cta-row">
             <a class="btn" href="builder.html">Build Your Placeholder</a>
             <a class="cta" href="options.html">See the Options</a>
@@ -44,23 +41,23 @@
         </div>
         <div>
           <figure class="image">
-            <img src="img/bunsen-honeydew.jpg" alt="Dr. Bunsen Honeydew of the Muppets, whose head is a honeydew melon." width="720" height="540">
-            <figcaption>Named in honor of Dr. Bunsen Honeydew, distinguished alumnus of Carnegie Mellonhead University and pioneer of unexpectedly applied science. (Photo:&nbsp;<a href="https://commons.wikimedia.org/wiki/File:Dr._Bunsen_Honeydew.png">MuppetsStudio</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC&nbsp;BY&nbsp;3.0</a>, cropped)</figcaption>
+            <img src="images/bunsen-honeydew.jpg" alt="Dr. Bunsen Honeydew of the Muppets, whose head is a honeydew melon." width="720" height="540">
+            <figcaption>Named in honor of Dr. Bunsen Honeydew, distinguished alumnus of Carnegie Mellonhead University and pioneer of unexpectedly applied science.<br>(Photo:&nbsp;<a href="https://commons.wikimedia.org/wiki/File:Dr._Bunsen_Honeydew.png">MuppetsStudio</a>, <a href="https://creativecommons.org/licenses/by/3.0/">CC&nbsp;BY&nbsp;3.0</a>, cropped)</figcaption>
           </figure>
         </div>
       </div>
-
-      <h2 class="rule-top" id="use">Use It</h2>
+    </div></div>
+    <div class="content wide"><div>
+      <h1 id="use">Use It</h1>
       <p>Give the width and height you want, in pixels, after the address:</p>
       <pre class="cmu-snippet"><code>&lt;img src="https://placemellon.andrew.cmu.edu/400/300" alt="Placeholder photo of Carnegie Mellon"&gt;</code></pre>
-      <p><a class="cta" href="builder.html">Build Your Placeholder</a></p>
       <p>For a square, give one number: <code>/400</code> is 400&nbsp;by&nbsp;400. Sizes run from 1 to 2048.</p>
       <ul class="cmu-checks">
         <li><strong>The same size always gets the same photo</strong>, so your mockup looks the same every time you open it.</li>
         <li><strong>Wide sizes get landscape photos</strong> and tall sizes get portrait ones, so less is cropped away.</li>
         <li><strong>Photos are cropped around what's interesting</strong> in them, such as people and buildings.</li>
       </ul>
-      <p><a class="cta" href="options.html">Explore Categories, Grayscale, Scotty and More</a></p>
+      <p><a class="cta" href="builder.html">Build Your Placeholder</a></p>
     </div></div>
   </main>
   <footer class="grid column3 invert">
@@ -85,6 +82,6 @@
 <script src="https://www.cmu.edu/common/standard-v6/js/list.min.js"></script>
 <script src="https://www.cmu.edu/common/standard-v6/js/jquery-1.10.1.min.js"></script>
 <script src="https://www.cmu.edu/common/standard-v6/js/main.6.7.min.js"></script>
-<script src="docs.js"></script>
+<script src="js/docs.js"></script>
 </body>
 </html>

@@ -176,7 +176,7 @@ describe("routes", () => {
     try {
       const res = await request(createApp(catalog, fakeFetch)).get("/").expect(200).expect("Content-Type", /html/);
       expect(res.text).toContain("<title>PlaceMellon");
-      await request(createApp(catalog, fakeFetch)).get("/docs.js").expect(200);
+      await request(createApp(catalog, fakeFetch)).get("/js/docs.js").expect(200);
     } finally {
       delete process.env.DOCS_URL;
     }
