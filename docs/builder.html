@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Builder - PlaceMellon - Carnegie Mellon University</title>
+  <meta name="description" content="Build a PlaceMellon address: choose a size, a photo or Scotty, and options, and see the image.">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700,700italic" rel="stylesheet" type="text/css">
+  <link href="https://www.cmu.edu/common/standard-v6/css/main.6.7.min.css" media="screen" rel="stylesheet" type="text/css">
+  <!-- Switch to cdn.jsdelivr.net/gh/CMUTLI/cmu-web-kit@0.1.0 once the kit is released -->
+  <link href="https://cmutli.github.io/cmu-web-kit/css/cmu-cms.css" rel="stylesheet" type="text/css">
+  <link href="https://cmutli.github.io/cmu-web-kit/css/cmu-app.css" rel="stylesheet" type="text/css">
+  <link href="//www.cmu.edu/favicon.ico" rel="icon">
+  <link href="//www.cmu.edu/favicon-152.png" rel="apple-touch-icon-precomposed">
+  <meta content="#9f0000" name="msapplication-TileColor">
+  <meta content="//www.cmu.edu/favicon-144.png" name="msapplication-TileImage">
+</head>
+<!-- PlaceMellon's information page, published with GitHub Pages and
+     served at / by npm run dev. See the script at the end for where the
+     example images load from. -->
+<body class="no-js cmu-app">
+<div id="container">
+  <header>
+    <div class="roof red invert">
+      <div>
+        <a class="wordmark" href="https://www.cmu.edu/">Carnegie Mellon University</a>
+        <button aria-label="toggle menu" aria-pressed="false" class="menu-btn" href="#nav"><b>&#8212;</b><b>&#8212;</b><b>&#8212;</b></button>
+      </div>
+    </div>
+    <div id="sitename">
+      <span class="sitetitle"><a href="index.html">PlaceMellon</a></span>
+      <h2>Placeholder images of Carnegie Mellon</h2>
+    </div>
+  </header>
+  <main id="content">
+    <div class="breadcrumbs">
+      <a href="index.html">PlaceMellon</a>&nbsp;&rsaquo;&nbsp;Builder
+    </div>
+    <div class="content wide"><div>
+      <h1>Build Your Placeholder</h1>
+      <p class="cmu-lead">Choose a size and options, and copy the address or the HTML.</p>
+      <form id="pm-builder">
+        <div class="cmu-split">
+        <div>
+          <fieldset>
+            <legend>Size</legend>
+            <label for="pm-width">Width</label>
+            <input type="text" inputmode="numeric" id="pm-width" value="720" autocomplete="off" aria-describedby="pm-size-hint">
+            <label for="pm-height">Height</label>
+            <input type="text" inputmode="numeric" id="pm-height" value="480" autocomplete="off" aria-describedby="pm-size-hint">
+            <p class="cmu-hint" id="pm-size-hint">In pixels, from 1 to 2048. Leave the height empty for a square.</p>
+          </fieldset>
+          <fieldset>
+            <legend>Image</legend>
+            <ul>
+              <li><input type="radio" name="pm-kind" id="pm-kind-photo" value="photo" checked><label for="pm-kind-photo">A CMU Photo</label></li>
+              <li><input type="radio" name="pm-kind" id="pm-kind-scotty" value="scotty"><label for="pm-kind-scotty">Scotty</label></li>
+              <li><input type="radio" name="pm-kind" id="pm-kind-profile" value="profile"><label for="pm-kind-profile">Round Scotty Profile Picture</label></li>
+            </ul>
+          </fieldset>
+          <fieldset id="pm-photo-options">
+            <legend>Photo</legend>
+            <label for="pm-category">Category</label>
+            <select id="pm-category">
+              <option value="">Any</option>
+              <option value="campus" selected>Campus</option>
+              <option value="classrooms">Classrooms</option>
+              <option value="labs">Labs</option>
+              <option value="life">Life</option>
+            </select>
+            <ul>
+              <li><input type="checkbox" id="pm-random" aria-describedby="pm-random-hint"><label for="pm-random">Random Photo</label></li>
+            </ul>
+            <p class="cmu-hint" id="pm-random-hint">A different photo each time the address loads, instead of the same one for this size.</p>
+          </fieldset>
+          <fieldset>
+            <legend>Color</legend>
+            <ul>
+              <li><input type="checkbox" id="pm-gray"><label for="pm-gray">Grayscale</label></li>
+            </ul>
+          </fieldset>
+        </div><div>
+          <h2>Address</h2>
+          <pre class="cmu-snippet cmu-snippet--wrap"><code id="pm-url"></code></pre>
+          <p><button type="button" class="btn" data-cmu-copy="#pm-url">Copy Address</button></p>
+          <h2>HTML</h2>
+          <pre class="cmu-snippet cmu-snippet--wrap"><code id="pm-html"></code></pre>
+          <p><button type="button" class="btn" data-cmu-copy="#pm-html">Copy HTML</button></p>
+          <h2>Preview</h2>
+          <figure class="image">
+            <img id="pm-preview" alt="Preview of the placeholder image.">
+            <figcaption id="pm-preview-note" hidden></figcaption>
+          </figure>
+          <div id="pm-another-row" hidden>
+            <button type="button" class="btn ghost" id="pm-another">Show Another Photo</button>
+          </div>
+        </div>
+        </div>
+      </form>
+    </div></div>
+  </main>
+  <footer class="grid column3 invert">
+    <div>
+      <p>PlaceMellon<br>Carnegie Mellon University<br>5000 Forbes Avenue<br>Pittsburgh, PA 15213</p>
+      <ul><li><a href="https://www.cmu.edu/legal/">Legal Info</a></li><li><a href="https://www.cmu.edu/">www.cmu.edu</a></li></ul>
+      <ul><li>&copy; 2026 Carnegie Mellon University</li></ul>
+    </div>
+    <div></div>
+    <div>
+      <nav id="nav">
+        <ul>
+        <li class="active"><a href="builder.html">Builder</a></li>
+        <li><a href="options.html">Options</a></li>
+        <li><a href="about.html">About</a></li>
+        <li class="secondary"><a class="external" href="https://github.com/CMUTLI/cmu-placemellon">PlaceMellon on GitHub</a></li>
+        </ul>
+      </nav>
+    </div>
+  </footer>
+</div>
+<script src="https://www.cmu.edu/common/standard-v6/js/list.min.js"></script>
+<script src="https://www.cmu.edu/common/standard-v6/js/jquery-1.10.1.min.js"></script>
+<script src="https://www.cmu.edu/common/standard-v6/js/main.6.7.min.js"></script>
+<script src="https://cmutli.github.io/cmu-web-kit/js/cmu-app.js"></script>
+<script src="docs.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>
