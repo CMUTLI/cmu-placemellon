@@ -1,4 +1,5 @@
-# Pinned by digest (multi-platform index); bump it on purpose.
+# The project's only Node version. Pinned by digest (multi-platform index);
+# Dependabot proposes updates.
 FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d AS base
 RUN npm install --global npm@12.2.1
 WORKDIR /app
@@ -15,6 +16,12 @@ RUN apt-get update \
     && chown -R node:node /app
 USER node
 CMD ["sleep", "infinity"]
+
+# Runs every check (npm run check) with the image's own Node and npm; CI
+# builds this stage
+FROM dependencies AS test
+COPY . .
+RUN npm run check
 
 FROM dependencies AS build
 COPY tsconfig.json ./

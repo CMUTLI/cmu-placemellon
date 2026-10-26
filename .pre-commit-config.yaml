@@ -19,3 +19,9 @@ repos:
         entry: npm run typecheck
         language: system
         pass_filenames: false
+      - id: check-node
+        name: Node version
+        entry: npm run check:node
+        language: system
+        pass_filenames: false
+        files: ^(Dockerfile|package\.json|scripts/check-node-version\.mjs)$

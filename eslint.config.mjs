@@ -26,7 +26,7 @@ export default defineConfig(
     languageOptions: { globals: { PM_BASE: "readonly", PM_LIVE: "readonly" } },
   },
   {
-    files: ["*.mjs"],
+    files: ["*.mjs", "scripts/**/*.mjs"],
     extends: [js.configs.recommended],
     languageOptions: { globals: globals.node },
   },

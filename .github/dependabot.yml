@@ -11,6 +11,10 @@ updates:
       # Minor and patch updates in one pull request; majors stay separate
       npm-minor-and-patch:
         update-types: [minor, patch]
+    ignore:
+      # Follows the Dockerfile's Node; updated in the Node upgrade PR
+      - dependency-name: "@types/node"
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: docker
     directory: /
@@ -19,10 +23,6 @@ updates:
     commit-message:
       prefix: build
       include: scope
-    ignore:
-      # Stay on Node 22 until moving to a new release line on purpose
-      - dependency-name: node
-        update-types: [version-update:semver-major]
 
   - package-ecosystem: github-actions
     directory: /

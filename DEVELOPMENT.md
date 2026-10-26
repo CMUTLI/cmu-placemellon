@@ -4,44 +4,35 @@ PlaceMellon is a TypeScript service built with Express and sharp. It has no
 database and needs no API keys. Photo requests need access to CMU Selects
 and its image CDN; the tests use a fake photo source and do not need either.
 
-## Local setup
+## Development environment
 
-Use Node.js 22.22.2 or later in the Node 22 release line and npm 12.2.1,
-matching the container's tooling. Run these commands from the repository root:
+Develop in the devcontainer. Use Docker and install the VS Code Dev
+Containers extension. Open the
+repository in VS Code. From the VS Code Command Palette, select
+**Dev Containers: Reopen in Container**.
+
+The devcontainer builds the Dockerfile's `development` stage, so it has the
+same Node and npm as the production image; the Dockerfile's `FROM` line is
+the project's only Node version. It installs dependencies with `npm ci` and
+runs as the `node` user. Git and curl are
+included. The checkout is mounted at `/app`, and dependencies live in a
+separate named volume so host and container installations stay separate.
+
+Enable the [pre-commit hooks](#pre-commit-hooks) and start the server in
+the container terminal:
 
 ```bash
-npm ci
 npx prek install
 npm run dev
 ```
 
-Open <http://localhost:3000/>. The development command watches `src/` and
-restarts the server when TypeScript changes. With `DOCS_URL` unset, the
-server serves the documentation from `docs/`. Reload the browser after
-editing HTML, JavaScript, or images there.
+The development command watches `src/` and restarts the server when
+TypeScript changes. With `DOCS_URL` unset, the server serves the
+documentation from `docs/`. Reload the browser after editing HTML,
+JavaScript, or images there.
 
-The photo list loads in the background. Photo requests return 503 until it
-is ready; the documentation and Scotty images work while it loads.
-
-## Devcontainer
-
-Use Docker and install the VS Code Dev Containers extension. Open the
-repository in VS Code. From the VS Code Command Palette, select
-**Dev Containers: Reopen in Container**.
-
-The devcontainer builds the Dockerfile's `development` target, installs
-dependencies with `npm ci`, and runs as the `node` user. Git and curl are
-included. The checkout is mounted at `/app`, and dependencies live in a
-separate named volume so host and container installations stay separate.
-
-Start the server in the container terminal:
-
-```bash
-npm run dev
-```
-
-VS Code forwards container port 3000. Check its **Ports** panel for the
-local address: if a host process already uses 3000, the forwarded port may
+VS Code forwards container port 3000; open the local address from its
+**Ports** panel. If a host process already uses 3000, the forwarded port may
 be 3001 or another available port. Opening the container does not start
 the development server automatically.
 
@@ -49,6 +40,9 @@ Run `npm ci` in the container after pulling dependency changes. After
 changing the Dockerfile or devcontainer configuration, use
 **Dev Containers: Rebuild Container** from the Command Palette while
 connected to the container.
+
+The photo list loads in the background. Photo requests return 503 until it
+is ready; the documentation and Scotty images work while it loads.
 
 ## Checks
 
@@ -62,7 +56,9 @@ npx prek install
 ```
 
 The hooks in `.pre-commit-config.yaml` run ESLint, Prettier's formatting
-check, and TypeScript type checking before a commit. They use the project's
+check, and TypeScript type checking before a commit. When the Dockerfile or
+`package.json` changes, they also check that `@types/node` matches the
+Dockerfile's Node version. They use the project's
 npm commands and check the whole project. If a check fails, fix the reported
 problems and retry the commit.
 
@@ -78,11 +74,15 @@ Node installation and dependencies in the environment where Git runs.
 ### Full validation
 
 ```bash
-npm run lint
-npm run format:check
-npm test
-npm run typecheck
-npm run build
+npm run check
+```
+
+This runs the Node version check, ESLint, Prettier's check, type checking,
+the tests, and the build. CI runs the same command by building the
+Dockerfile's `test` stage; to do that outside the devcontainer:
+
+```bash
+podman build --target test .
 ```
 
 Tests cover URL options, sizing, image rendering, photo selection, caching,
@@ -126,19 +126,28 @@ The browser scripts in `docs/js/` are plain JavaScript and have no build step.
 Environment variables and their defaults are listed in
 [Deployment configuration](DEPLOYMENT.md#configuration).
 
+## Updating Node
+
+Dependabot proposes new Node release lines by updating the Dockerfile's
+`FROM` line. In that pull request, update `@types/node` to the same major
+version; `npm run check:node` fails until it matches. Node's odd-numbered
+releases never get long-term support; close their pull requests, or comment
+`@dependabot ignore this major version`.
+
 ## Project structure
 
-| Path               | Purpose                                                          |
-| ------------------ | ---------------------------------------------------------------- |
-| `src/index.ts`     | Starts the server and photo catalog                              |
-| `src/app.ts`       | Routes, option validation, response caching, and health endpoint |
-| `src/widen.ts`     | Lists photos and previews from the CMU Selects portals           |
-| `src/catalog.ts`   | Refreshes the catalog and selects photos                         |
-| `src/render.ts`    | Crops photos and renders Scotty images with sharp                |
-| `assets/`          | Scotty vector artwork used by the service                        |
-| `docs/`            | User documentation, builder, and browser assets                  |
-| `test/app.test.ts` | Service tests                                                    |
-| `dist/`            | Generated server JavaScript; ignored by Git                      |
+| Path                             | Purpose                                                          |
+| -------------------------------- | ---------------------------------------------------------------- |
+| `src/index.ts`                   | Starts the server and photo catalog                              |
+| `src/app.ts`                     | Routes, option validation, response caching, and health endpoint |
+| `src/widen.ts`                   | Lists photos and previews from the CMU Selects portals           |
+| `src/catalog.ts`                 | Refreshes the catalog and selects photos                         |
+| `src/render.ts`                  | Crops photos and renders Scotty images with sharp                |
+| `assets/`                        | Scotty vector artwork used by the service                        |
+| `docs/`                          | User documentation, builder, and browser assets                  |
+| `test/app.test.ts`               | Service tests                                                    |
+| `scripts/check-node-version.mjs` | Checks that `@types/node` matches the Dockerfile's Node version  |
+| `dist/`                          | Generated server JavaScript; ignored by Git                      |
 
 ## How the service works
 
