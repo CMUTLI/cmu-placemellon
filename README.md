@@ -92,3 +92,18 @@ maps your host user to the container's `node` user (UID/GID 1000), preserving
 host ownership when editing the checkout. Disabling SELinux container
 labels allows access to the mounted checkout. These arguments are for
 Podman; Docker does not support `--userns=keep-id`.
+
+## License
+
+The code is under the BSD 3-Clause License (see `LICENSE`), copyright
+Carnegie Mellon University. It doesn't cover:
+
+* **Carnegie Mellon's names and marks**, including the Scotty images in
+  `assets/scotty-*.svg` (traced from the Office of Human Resources' Scotty
+  avatar). The license grants no rights to them, and its third clause
+  bars using the university's name to endorse or promote work derived from
+  this code.
+* **The photos.** They aren't in this repository; the service fetches them
+  from University Communications & Marketing's CMU Selects, under its terms.
+* **`docs/images/bunsen-honeydew.jpg`**, by MuppetsStudio, under
+  [CC BY 3.0](https://creativecommons.org/licenses/by/3.0/), cropped.

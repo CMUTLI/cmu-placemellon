@@ -22,5 +22,6 @@
     "tsx": "^4.23.15",
     "typescript": "^5.9.3",
     "vitest": "^4.1.12"
-  }
+  },
+  "license": "BSD-3-Clause"
 }
