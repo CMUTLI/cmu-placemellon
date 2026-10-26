@@ -1,21 +1,51 @@
 # Deployment
 
-This guide covers building, configuring, and running the PlaceMellon
-container. The application needs outbound HTTPS access to CMU Selects and
-its image CDN. It has no database, API keys, or persistent application data.
+This guide covers PlaceMellon's container image: where it's published, how
+to run and configure it, and how to check its health. The application needs
+outbound HTTPS access to CMU Selects and its image CDN. It has no database,
+API keys, or persistent application data.
 
-## Build the image
+The commands here use Podman. Most work unchanged with Docker.
 
-From the repository root, using Podman:
+## Images
+
+GitHub Actions publishes the production image to
+`ghcr.io/cmutli/cmu-placemellon` when a version tag (`v*`) is pushed, after
+linting, formatting, type checking, tests, and a build pass. Pushes and pull
+requests run the same checks without publishing. The workflow is
+`.github/workflows/publish.yml`; it can also be run by hand from the
+repository's **Actions** tab to build the current commit.
+
+To release, tag the commit and push the tag:
+
+```bash
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+| Tag            | Points to                         |
+| -------------- | --------------------------------- |
+| `latest`       | The most recent release           |
+| `0.1.0`        | The build of version tag `v0.1.0` |
+| `sha-<commit>` | The build of one commit           |
+
+Tags move, so pin deployments to an image digest and update it deliberately:
+
+```bash
+podman pull ghcr.io/cmutli/cmu-placemellon:latest
+podman image inspect --format '{{.Digest}}' ghcr.io/cmutli/cmu-placemellon:latest
+```
+
+Use the result as `ghcr.io/cmutli/cmu-placemellon@sha256:...`.
+
+The image is built for `linux/amd64`.
+
+## Build the image yourself
+
+To build from a checkout instead, from the repository root:
 
 ```bash
 podman build --format docker -t localhost/placemellon:latest .
-```
-
-Or Docker:
-
-```bash
-docker build -t placemellon:latest .
 ```
 
 The Dockerfile compiles TypeScript in a build stage. The production image
@@ -24,8 +54,8 @@ documentation. It runs as the non-root `node` user. The Node base image is
 pinned by digest, and npm is pinned to 12.2.1 in the shared base stage.
 Update these pins deliberately when updating the tooling.
 
-Podman's `--format docker` preserves the Dockerfile's `HEALTHCHECK`.
-If building an OCI image instead, configure the health check in the runtime
+`--format docker` preserves the Dockerfile's `HEALTHCHECK`; Docker doesn't
+need it. If building an OCI image instead, configure the health check in the runtime
 or service definition; for a Quadlet, use `HealthCmd=`.
 
 ## Run the container
@@ -33,21 +63,22 @@ or service definition; for a Quadlet, use `HealthCmd=`.
 ```bash
 podman run -d --name placemellon \
   -p 127.0.0.1:3000:3000 \
-  localhost/placemellon:latest
+  ghcr.io/cmutli/cmu-placemellon:latest
 ```
 
-With Docker, use `docker run` and the `placemellon:latest` image name.
+For an image you built yourself, use its local name instead, such as
+`localhost/placemellon:latest`.
 The binding exposes the service only on the host's loopback interface.
 A reverse proxy on that host can forward public requests to it. To use a
 different host port, change the first port number, for example
 `-p 127.0.0.1:3001:3000`.
 
 The default `/` response redirects to the documentation on GitHub Pages.
-To serve the documentation bundled in the image, add `-e DOCS_URL=""` before
-the image name. Image URLs and `/healthz` are served by the application in
+To serve the documentation bundled in the image, add `-e DOCS_URL=""` to
+`podman run`. Image URLs and `/healthz` are served by the application in
 either mode.
 
-No volume is required. Restarting the container clears the image cache and
+Restarting the container clears the image cache and
 reloads the catalog from CMU Selects. Startup does not wait for that reload;
 photo requests return 503 until the catalog is ready, while the
 documentation (when served locally) and Scotty images remain available.
@@ -103,6 +134,10 @@ podman logs --follow placemellon
 podman stop placemellon
 ```
 
-Use the equivalent `docker` commands when running with Docker. The
-application logs catalog refresh results and image-rendering errors to
+The application logs catalog refresh results and image-rendering errors to
 standard output and standard error, which the container runtime captures.
+
+Under a Quadlet unit, the output goes to the journal. The unit is named
+after its `.container` file; for `placemellon.container`, a rootless unit's
+logs are at `journalctl --user -u placemellon`, run as the user that owns
+the unit. For a system-wide unit, leave out `--user`.

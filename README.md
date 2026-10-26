@@ -33,13 +33,16 @@ Report problems or suggest changes in
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for issues, pull requests, commit
-messages, and style conventions.
+Read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull
+request; it covers commit messages and style conventions too.
+[DEVELOPMENT.md](DEVELOPMENT.md) explains local setup, the devcontainer,
+tests, and how the service works.
 
-See [DEVELOPMENT.md](DEVELOPMENT.md) for local setup, the devcontainer,
-tests, compilation, and how the service works. See
-[DEPLOYMENT.md](DEPLOYMENT.md) for running the container, configuration,
-and health checks.
+## Deployment
+
+PlaceMellon is published as a container image on GitHub Container Registry.
+To run your own, follow [DEPLOYMENT.md](DEPLOYMENT.md) for the image,
+configuration, and health checks.
 
 ## License
 
