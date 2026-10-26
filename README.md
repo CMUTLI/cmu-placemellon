@@ -51,3 +51,44 @@ avatar, https://www.cmu.edu/hr/images/scotty.png.
     npm test
     npm run typecheck
     npm run build && npm start
+
+### Containers
+
+Build and run with Podman (the same Dockerfile also works with Docker):
+
+    podman build -t placemellon .
+    podman run --rm -p 3000:3000 placemellon
+
+The production image runs as the non-root `node` user and includes the
+Scotty assets and documentation. It uses the normal `DOCS_URL` redirect;
+add `-e DOCS_URL=` to serve the bundled documentation instead.
+
+### Devcontainer
+
+With Docker, open this folder in VS Code and run
+**Dev Containers: Reopen in Container**.
+Run `npm run dev` in the container terminal; port 3000 is forwarded and
+the documentation is served locally. The usual test and build commands
+work in that terminal too.
+
+The devcontainer uses the Dockerfile's `development` target, with Git and
+curl installed. Dependencies live in a separate named volume, refreshed
+with `npm ci` when the container is created.
+
+For rootless Podman, set `"dev.containers.dockerPath": "podman"` in
+VS Code's user settings and add these properties to
+`.devcontainer/devcontainer.json` before reopening:
+
+```json
+"updateRemoteUserUID": false,
+"runArgs": [
+  "--userns=keep-id:uid=1000,gid=1000",
+  "--security-opt=label=disable"
+]
+```
+
+Replace the existing `updateRemoteUserUID` property. The user namespace
+maps your host user to the container's `node` user (UID/GID 1000), preserving
+host ownership when editing the checkout. Disabling SELinux container
+labels allows access to the mounted checkout. These arguments are for
+Podman; Docker does not support `--userns=keep-id`.
