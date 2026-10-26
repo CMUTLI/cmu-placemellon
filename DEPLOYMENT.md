@@ -16,12 +16,8 @@ requests run the same checks and build the image without publishing it. The
 workflow is `.github/workflows/publish.yml`; it can also be run by hand from
 the repository's **Actions** tab to build the current commit.
 
-To release, tag the commit and push the tag:
-
-```bash
-git tag v0.1.0
-git push origin v0.1.0
-```
+Releases are tagged from `main`; see
+[Releasing](DEVELOPMENT.md#releasing).
 
 | Tag            | Points to                         |
 | -------------- | --------------------------------- |

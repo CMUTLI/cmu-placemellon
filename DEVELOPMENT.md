@@ -134,6 +134,35 @@ version; `npm run check:node` fails until it matches. Node's odd-numbered
 releases never get long-term support; close their pull requests, or comment
 `@dependabot ignore this major version`.
 
+## Releasing
+
+A release publishes the production image to GitHub Container Registry; see
+[Images](DEPLOYMENT.md#images) for its tags.
+
+1. Release from an up-to-date `main` whose latest CI run has passed:
+
+   ```bash
+   git switch main
+   git pull
+   ```
+
+2. Choose the version:
+   - **Major** when an existing URL or option stops working or behaves
+     differently.
+   - **Minor** for new options, features, or runtime changes, such as a new
+     Node release line.
+   - **Patch** for fixes and dependency updates.
+
+3. Create an annotated tag and push it:
+
+   ```bash
+   git tag -a v0.4.0 -m "PlaceMellon 0.4.0"
+   git push origin v0.4.0
+   ```
+
+The workflow runs every check, then publishes the image and moves `latest`
+to it. Update deployments' image digests to roll it out.
+
 ## Project structure
 
 | Path                             | Purpose                                                          |
