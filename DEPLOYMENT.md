@@ -73,9 +73,9 @@ A reverse proxy on that host can forward public requests to it. To use a
 different host port, change the first port number, for example
 `-p 127.0.0.1:3001:3000`.
 
-The default `/` response redirects to the documentation on GitHub Pages.
-To serve the documentation bundled in the image, add `-e DOCS_URL=""` to
-`podman run`. Image URLs and `/healthz` are served by the application in
+By default, `/` serves the documentation bundled in the image. Set
+`DOCS_URL` to redirect `/` elsewhere instead, such as the documentation on
+GitHub Pages. Image URLs and `/healthz` are served by the application in
 either mode.
 
 Restarting the container clears the image cache and
@@ -90,12 +90,12 @@ Pass environment variables with `-e NAME=value` or `--env-file PATH`.
 start an env file. These are all of the application's configuration
 variables:
 
-| Variable        | Default                                     | Purpose                                                                                 |
-| --------------- | ------------------------------------------- | --------------------------------------------------------------------------------------- |
-| `PORT`          | `3000`                                      | Port the application listens on inside the container                                    |
-| `DOCS_URL`      | `https://cmutli.github.io/cmu-placemellon/` | Destination for the `/` redirect; set to an empty string to serve bundled documentation |
-| `REFRESH_HOURS` | `6`                                         | Interval between catalog refreshes; preview-link expiry can trigger an earlier refresh  |
-| `CACHE_ENTRIES` | `256`                                       | Maximum number of rendered images cached in memory; `0` disables storage in this cache  |
+| Variable        | Default | Purpose                                                                                                                   |
+| --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `PORT`          | `3000`  | Port the application listens on inside the container                                                                      |
+| `DOCS_URL`      | unset   | Where `/` redirects, such as `https://cmutli.github.io/cmu-placemellon/`; unset or empty serves the bundled documentation |
+| `REFRESH_HOURS` | `6`     | Interval between catalog refreshes; preview-link expiry can trigger an earlier refresh                                    |
+| `CACHE_ENTRIES` | `256`   | Maximum number of rendered images cached in memory; `0` disables storage in this cache                                    |
 
 The production image also sets `NODE_ENV=production` for Express.
 Use a valid TCP port and a positive number of refresh hours. If changing

@@ -16,8 +16,8 @@ npm run dev
 ```
 
 Open <http://localhost:3000/>. The development command watches `src/` and
-restarts the server when TypeScript changes. It also sets `DOCS_URL=""` so
-the server serves the documentation from `docs/`. Reload the browser after
+restarts the server when TypeScript changes. With `DOCS_URL` unset, the
+server serves the documentation from `docs/`. Reload the browser after
 editing HTML, JavaScript, or images there.
 
 The photo list loads in the background. Photo requests return 503 until it
@@ -121,13 +121,6 @@ npm start
 `src/*.ts` into CommonJS JavaScript in `dist/`; `npm start` runs
 `dist/index.js`. Edit the TypeScript source rather than the generated files.
 The browser scripts in `docs/js/` are plain JavaScript and have no build step.
-
-Unlike `npm run dev`, `npm start` uses the normal documentation redirect.
-To serve the local documentation with the compiled application:
-
-```bash
-DOCS_URL="" npm start
-```
 
 Environment variables and their defaults are listed in
 [Deployment configuration](DEPLOYMENT.md#configuration).

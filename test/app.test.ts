@@ -217,20 +217,20 @@ describe("routes", () => {
       .expect("Location", "/g/50?gray&profile");
   });
 
-  it("sends / to the information page, or serves it without DOCS_URL", async () => {
+  it("serves the bundled docs at /, or redirects to DOCS_URL", async () => {
     const catalog = await ready([photo("a")]);
-    await request(createApp(catalog, fakeFetch))
+    const res = await request(createApp(catalog, fakeFetch))
       .get("/")
-      .expect(302)
-      .expect("Location", "https://cmutli.github.io/cmu-placemellon/");
-    process.env.DOCS_URL = "";
+      .expect(200)
+      .expect("Content-Type", /html/);
+    expect(res.text).toContain("<title>PlaceMellon");
+    await request(createApp(catalog, fakeFetch)).get("/js/docs.js").expect(200);
+    process.env.DOCS_URL = "https://cmutli.github.io/cmu-placemellon/";
     try {
-      const res = await request(createApp(catalog, fakeFetch))
+      await request(createApp(catalog, fakeFetch))
         .get("/")
-        .expect(200)
-        .expect("Content-Type", /html/);
-      expect(res.text).toContain("<title>PlaceMellon");
-      await request(createApp(catalog, fakeFetch)).get("/js/docs.js").expect(200);
+        .expect(302)
+        .expect("Location", "https://cmutli.github.io/cmu-placemellon/");
     } finally {
       delete process.env.DOCS_URL;
     }

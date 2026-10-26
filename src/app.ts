@@ -94,7 +94,7 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
   const app = express();
   const cache = new Lru(Number(process.env.CACHE_ENTRIES || 256));
 
-  const docs = process.env.DOCS_URL ?? "https://cmutli.github.io/cmu-placemellon/";
+  const docs = process.env.DOCS_URL;
   if (docs) app.get("/", (_req, res) => res.redirect(302, docs));
   else app.use(express.static(path.join(__dirname, "..", "docs"), { index: "index.html" }));
 
