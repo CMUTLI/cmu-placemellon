@@ -4,7 +4,7 @@
   var $ = function (id) { return document.getElementById(id); };
   var width = $("pm-width"), height = $("pm-height"), category = $("pm-category"),
       random = $("pm-random"), gray = $("pm-gray"),
-      photoOnly = document.querySelectorAll("[data-pm-photo]"),
+      photoOptions = $("pm-photo-options"),
       url = $("pm-url"), html = $("pm-html"), preview = $("pm-preview"),
       note = $("pm-preview-note"), another = $("pm-another"), anotherRow = $("pm-another-row"),
       sizeHint = $("pm-size-hint");
@@ -26,7 +26,7 @@
     var k = kind(), photo = k === "photo";
     // Category and random choose photos; profile pictures are square.
     // The photo choices show only under "A CMU Photo".
-    photoOnly.forEach(function (el) { el.hidden = !photo; });
+    photoOptions.hidden = !photo;
     height.disabled = k === "profile";
     var w = size(width), h = k === "profile" ? "" : size(height);
     // The hint says what's wrong; aria-invalid marks which box.

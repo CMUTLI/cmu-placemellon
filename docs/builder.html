@@ -49,29 +49,31 @@
             <p class="cmu-hint" id="pm-size-hint">In pixels, from 1 to 2048. Leave the height empty for a square.</p>
           </fieldset>
           <fieldset>
-            <legend class="cmu-label">Image</legend>
-            <ul>
-              <li><input type="radio" name="pm-kind" id="pm-kind-photo" value="photo" checked><label for="pm-kind-photo">A CMU Photo</label></li>
-              <li><input type="radio" name="pm-kind" id="pm-kind-scotty" value="scotty"><label for="pm-kind-scotty">Scotty</label></li>
-              <li><input type="radio" name="pm-kind" id="pm-kind-profile" value="profile"><label for="pm-kind-profile">Round Scotty Profile Picture</label></li>
-            </ul>
-            <label for="pm-category" data-pm-photo>Category</label>
-            <select id="pm-category" data-pm-photo>
-              <option value="">Any</option>
-              <option value="campus" selected>Campus</option>
-              <option value="classrooms">Classrooms</option>
-              <option value="labs">Labs</option>
-              <option value="life">Life</option>
-            </select>
-            <ul data-pm-photo>
-              <li><input type="checkbox" id="pm-random" aria-describedby="pm-random-hint"><label for="pm-random">Random Photo</label></li>
-            </ul>
-            <p class="cmu-hint" id="pm-random-hint" data-pm-photo>A different photo each time the address loads, instead of the same one for this size.</p>
-          </fieldset>
-          <fieldset>
             <legend class="cmu-label">Color</legend>
             <ul>
               <li><input type="checkbox" id="pm-gray"><label for="pm-gray">Grayscale</label></li>
+            </ul>
+          </fieldset>
+          <fieldset>
+            <legend class="cmu-label">Image</legend>
+            <ul>
+              <li><input type="radio" name="pm-kind" id="pm-kind-photo" value="photo" checked><label for="pm-kind-photo">A CMU Photo</label>
+                <div class="cmu-sub-options" id="pm-photo-options">
+                  <label for="pm-category">Category</label>
+                  <select id="pm-category">
+                    <option value="">Any</option>
+                    <option value="campus" selected>Campus</option>
+                    <option value="classrooms">Classrooms</option>
+                    <option value="labs">Labs</option>
+                    <option value="life">Life</option>
+                  </select>
+                  <ul>
+                    <li><input type="checkbox" id="pm-random"><label for="pm-random">Random Photo Each Time</label></li>
+                  </ul>
+                </div>
+              </li>
+              <li><input type="radio" name="pm-kind" id="pm-kind-scotty" value="scotty"><label for="pm-kind-scotty">Scotty</label></li>
+              <li><input type="radio" name="pm-kind" id="pm-kind-profile" value="profile"><label for="pm-kind-profile">Round Scotty Profile Picture</label></li>
             </ul>
           </fieldset>
         </div><div>
@@ -80,7 +82,7 @@
             <img id="pm-preview" alt="Preview of the placeholder image.">
             <figcaption id="pm-preview-note" hidden></figcaption>
           </figure>
-          <div id="pm-another-row" hidden>
+          <div class="cmu-button-note" id="pm-another-row" hidden>
             <button type="button" class="btn ghost" id="pm-another">Show Another Photo</button>
           </div>
           <p class="cmu-label">Address</p>
