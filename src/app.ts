@@ -68,8 +68,6 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
   const app = express();
   const cache = new Lru(Number(process.env.CACHE_ENTRIES || 256));
 
-  // The information page lives elsewhere (GitHub Pages for now, maybe
-  // cmu.edu later). With DOCS_URL="", as in npm run dev, it's served here.
   const docs = process.env.DOCS_URL ?? "https://cmutli.github.io/cmu-placemellon/";
   if (docs) app.get("/", (_req, res) => res.redirect(302, docs));
   else app.use(express.static(path.join(__dirname, "..", "docs"), { index: "index.html" }));
