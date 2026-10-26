@@ -29,7 +29,7 @@
     photoOptions.hidden = !photo;
     height.disabled = k === "profile";
     var w = size(width), h = k === "profile" ? "" : size(height);
-    // The hint says what's wrong; aria-invalid marks which box.
+    // The hint says what's wrong; aria-invalid marks which box
     width.setAttribute("aria-invalid", w === null || w === "" ? "true" : "false");
     height.setAttribute("aria-invalid", h === null ? "true" : "false");
     if (w === null || w === "" || h === null) {
@@ -49,7 +49,7 @@
     url.textContent = PM_LIVE + path + qs;
     html.textContent = '<img src="' + PM_LIVE + path + qs + '" alt="' + alt(k, photo && category.value) + '">';
 
-    // The same address shows the same image, so give random previews their own.
+    // The same address shows the same image, so give random previews their own
     var previewQs = photo && random.checked ? qs.replace("random", "random=" + (++tries)) : qs;
     preview.src = PM_BASE + path + previewQs;
     preview.width = w;
@@ -70,7 +70,7 @@
   document.getElementById("pm-builder").addEventListener("input", update);
   document.getElementById("pm-builder").addEventListener("submit", function (e) { e.preventDefault(); });
   another.addEventListener("click", update);
-  // builder.html?category=labs starts on that category (from the Options page).
+  // builder.html?category=labs starts on that category (from the Options page)
   var start = new URLSearchParams(location.search).get("category");
   if (start && category.querySelector('option[value="' + start + '"]')) category.value = start;
   update();

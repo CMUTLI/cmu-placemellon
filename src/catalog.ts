@@ -2,7 +2,7 @@ import { listPhotos, Photo } from "./widen";
 
 const HOUR = 3600_000;
 
-// Earliest sig.expires among the preview links, in ms, or null if none parse.
+// Earliest sig.expires among the preview links, in ms, or null if none parse
 export function earliestExpiry(photos: Photo[]): number | null {
   let min: number | null = null;
   for (const p of photos) {
@@ -27,7 +27,7 @@ export class Catalog {
     private everyMs = HOUR * Number(process.env.REFRESH_HOURS || 6),
   ) {}
 
-  // One refresh at a time; callers during a refresh share it.
+  // One refresh at a time; callers during a refresh share it
   refresh(): Promise<void> {
     this.pending ??= this.list()
       .then((photos) => {
@@ -92,7 +92,7 @@ export function sameOrientation(photos: Photo[], ratio: number): Photo[] {
   return pool.length ? pool : photos;
 }
 
-// FNV-1a with a murmur3 finish, so similar strings still score independently.
+// FNV-1a with a murmur3 finish, so similar strings still score independently
 function hash(s: string): number {
   let h = 2166136261;
   for (let i = 0; i < s.length; i++) h = Math.imul(h ^ s.charCodeAt(i), 16777619);

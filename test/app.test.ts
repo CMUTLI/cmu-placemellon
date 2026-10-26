@@ -16,7 +16,7 @@ const photo = (id: string, expires = 1792969200, aspect = 1.5, categories = ["ca
 
 const jpeg = sharp({ create: { width: 600, height: 400, channels: 3, background: "#c41230" } }).jpeg().toBuffer();
 
-// Fake fetch: serves a red JPEG, or 403 for links containing "stale".
+// Fake fetch: serves a red JPEG, or 403 for links containing "stale"
 const fakeFetch = (async (url: string) =>
   url.includes("stale") ? new Response(null, { status: 403 }) : new Response(await jpeg)) as unknown as typeof fetch;
 

@@ -13,7 +13,7 @@ const BUST = { x: 30, y: 40, w: 268, h: 260 };
 
 export class StaleLinkError extends Error {}
 
-// Previews fit a size x size box. Use the smallest that still covers w x h.
+// Previews fit a size x size box; use the smallest that still covers w x h
 export function pickPreview(photo: Photo, w: number, h: number): Preview {
   const pw = (n: number) => n * Math.min(1, photo.aspect);
   const ph = (n: number) => n * Math.min(1, 1 / photo.aspect);
@@ -29,7 +29,7 @@ export async function renderPhoto(photo: Photo, w: number, h: number, gray: bool
   return img.jpeg({ quality: 82, mozjpeg: true }).toBuffer();
 }
 
-// Scotty's bust on the avatar's gradient, standing on the bottom edge.
+// Scotty's bust on the avatar's gradient, standing on the bottom edge
 export function scottySvg(w: number, h: number): string {
   const s = Math.min((0.9 * w) / BUST.w, (0.9 * h) / BUST.h);
   const x = (w - BUST.w * s) / 2 - BUST.x * s;

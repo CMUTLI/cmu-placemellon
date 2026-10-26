@@ -18,7 +18,7 @@ export class OptionError extends Error {
   constructor(public status: number, message: string) { super(message); }
 }
 
-// Reads the query string; rejects unknown options and ones that don't go together.
+// Reads the query string; rejects unknown options and ones that don't go together
 export function parseOptions(query: Record<string, unknown>, w: number, h: number, gray = false): Options {
   const unknown = Object.keys(query).filter((k) => !OPTIONS.includes(k));
   if (unknown.length) throw new OptionError(400, `Unknown option ?${unknown[0]}. Options: ${OPTIONS.map((o) => "?" + o).join(", ")}.`);
@@ -43,7 +43,7 @@ interface Rendered {
   photo?: string;
 }
 
-// Rendered images, newest last; the oldest go first.
+// Rendered images, newest last; the oldest go first
 class Lru {
   private map = new Map<string, Rendered>();
   constructor(private max: number) {}
@@ -79,7 +79,7 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
     res.status(catalog.photos.length ? 200 : 503).json({ photos: catalog.photos.length, categories, refreshedAt: catalog.refreshedAt });
   });
 
-  // Random images skip the cache, ours and everyone else's.
+  // Random images skip the cache, ours and everyone else's
   async function send(res: Response, key: string | null, make: () => Promise<Rendered>) {
     let out = key ? cache.get(key) : undefined;
     if (!out) {
@@ -111,7 +111,7 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
       return;
     }
 
-    // Profile pictures are square: send /96/64?profile to /64?profile.
+    // Profile pictures are square: send /96/64?profile to /64?profile
     if (o.profile && w !== h) {
       const qs = req.originalUrl.slice(req.originalUrl.indexOf("?"));
       res.redirect(302, `${gray ? "/g" : ""}/${Math.min(w, h)}${qs}`);
@@ -136,7 +136,7 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
         return { type: "jpeg", body: await renderPhoto(p, w, h, o.gray, get), photo: p.filename };
       } catch (e) {
         if (!(e instanceof StaleLinkError)) throw e;
-        // Preview links expired early; re-list and try once more.
+        // Preview links expired early; re-list and try once more
         await catalog.refresh();
         p = catalog.pick(w, h, o.random, o.category)!;
         return { type: "jpeg", body: await renderPhoto(p, w, h, o.gray, get), photo: p.filename };
@@ -144,7 +144,7 @@ export function createApp(catalog: Catalog, get: typeof fetch = fetch) {
     });
   };
 
-  // /g/ first, or /:w/:h would read /g/400 as a width of "g".
+  // /g/ first, or /:w/:h would read /g/400 as a width of "g"
   app.get(["/g/:w", "/g/:w/:h"], image(true));
   app.get(["/:w", "/:w/:h"], image(false));
 
