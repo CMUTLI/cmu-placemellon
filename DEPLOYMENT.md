@@ -55,7 +55,9 @@ documentation (when served locally) and Scotty images remain available.
 ## Configuration
 
 Pass environment variables with `-e NAME=value` or `--env-file PATH`.
-These are all of the application's configuration variables:
+[`.env.example`](.env.example) lists them with their defaults; copy it to
+start an env file. These are all of the application's configuration
+variables:
 
 | Variable        | Default                                     | Purpose                                                                                 |
 | --------------- | ------------------------------------------- | --------------------------------------------------------------------------------------- |
