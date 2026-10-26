@@ -12,9 +12,9 @@ The commands here use Podman. Most work unchanged with Docker.
 GitHub Actions publishes the production image to
 `ghcr.io/cmutli/cmu-placemellon` when a version tag (`v*`) is pushed, after
 linting, formatting, type checking, tests, and a build pass. Pushes and pull
-requests run the same checks without publishing. The workflow is
-`.github/workflows/publish.yml`; it can also be run by hand from the
-repository's **Actions** tab to build the current commit.
+requests run the same checks and build the image without publishing it. The
+workflow is `.github/workflows/publish.yml`; it can also be run by hand from
+the repository's **Actions** tab to build the current commit.
 
 To release, tag the commit and push the tag:
 
