@@ -98,7 +98,8 @@ own configuration. Generated output is excluded.
 Prettier uses `.prettierrc.json` for TypeScript, JavaScript, HTML, Markdown,
 and JSON. `.prettierignore` excludes generated output, the npm lockfile,
 and image assets. The devcontainer includes the ESLint and Prettier VS Code
-extensions and selects Prettier as the formatter for these file types.
+extensions, selects Prettier as the formatter for these file types, and
+formats them on save.
 
 To apply automatic fixes and formatting:
 

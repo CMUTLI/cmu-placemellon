@@ -30,7 +30,8 @@
       "settings": {
         "js/ts.tsdk.path": "node_modules/typescript/lib",
         "[typescript][javascript][json][jsonc][html][markdown]": {
-          "editor.defaultFormatter": "esbenp.prettier-vscode"
+          "editor.defaultFormatter": "esbenp.prettier-vscode",
+          "editor.formatOnSave": true
         }
       }
     }
