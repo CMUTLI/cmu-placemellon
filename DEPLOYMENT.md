@@ -10,7 +10,7 @@ The commands here use Podman. Most work unchanged with Docker.
 ## Images
 
 GitHub Actions publishes the production image to
-`ghcr.io/cmutli/cmu-placemellon` when a version tag (`v*`) is pushed, after
+`ghcr.io/cmu-web/cmu-web-placemellon` when a version tag (`v*`) is pushed, after
 linting, formatting, type checking, tests, and a build pass. Pushes and pull
 requests run the same checks and build the image without publishing it. The
 workflow is `.github/workflows/publish.yml`; it can also be run by hand from
@@ -28,11 +28,11 @@ Releases are tagged from `main`; see
 Tags move, so pin deployments to an image digest and update it deliberately:
 
 ```bash
-podman pull ghcr.io/cmutli/cmu-placemellon:latest
-podman image inspect --format '{{.Digest}}' ghcr.io/cmutli/cmu-placemellon:latest
+podman pull ghcr.io/cmu-web/cmu-web-placemellon:latest
+podman image inspect --format '{{.Digest}}' ghcr.io/cmu-web/cmu-web-placemellon:latest
 ```
 
-Use the result as `ghcr.io/cmutli/cmu-placemellon@sha256:...`.
+Use the result as `ghcr.io/cmu-web/cmu-web-placemellon@sha256:...`.
 
 The image is built for `linux/amd64`.
 
@@ -59,7 +59,7 @@ or service definition; for a Quadlet, use `HealthCmd=`.
 ```bash
 podman run -d --name placemellon \
   -p 127.0.0.1:3000:3000 \
-  ghcr.io/cmutli/cmu-placemellon:latest
+  ghcr.io/cmu-web/cmu-web-placemellon:latest
 ```
 
 For an image you built yourself, use its local name instead, such as
@@ -86,12 +86,12 @@ Pass environment variables with `-e NAME=value` or `--env-file PATH`.
 start an env file. These are all of the application's configuration
 variables:
 
-| Variable        | Default | Purpose                                                                                                                   |
-| --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `PORT`          | `3000`  | Port the application listens on inside the container                                                                      |
-| `DOCS_URL`      | unset   | Where `/` redirects, such as `https://cmutli.github.io/cmu-placemellon/`; unset or empty serves the bundled documentation |
-| `REFRESH_HOURS` | `6`     | Interval between catalog refreshes; preview-link expiry can trigger an earlier refresh                                    |
-| `CACHE_ENTRIES` | `256`   | Maximum number of rendered images cached in memory; `0` disables storage in this cache                                    |
+| Variable        | Default | Purpose                                                                                                                        |
+| --------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `PORT`          | `3000`  | Port the application listens on inside the container                                                                           |
+| `DOCS_URL`      | unset   | Where `/` redirects, such as `https://cmu-web.github.io/cmu-web-placemellon/`; unset or empty serves the bundled documentation |
+| `REFRESH_HOURS` | `6`     | Interval between catalog refreshes; preview-link expiry can trigger an earlier refresh                                         |
+| `CACHE_ENTRIES` | `256`   | Maximum number of rendered images cached in memory; `0` disables storage in this cache                                         |
 
 The production image also sets `NODE_ENV=production` for Express.
 Use a valid TCP port and a positive number of refresh hours. If changing

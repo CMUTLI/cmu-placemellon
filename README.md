@@ -7,7 +7,7 @@ profile pictures.
 
 Photos come from University Communications & Marketing's CMU Selects
 collection. Use them for Carnegie Mellon work; see the
-[photo source and usage information](https://cmutli.github.io/cmu-placemellon/about.html).
+[photo source and usage information](https://cmu-web.github.io/cmu-web-placemellon/about.html).
 
 ## Use it
 
@@ -21,15 +21,15 @@ This returns a photo 400 pixels wide and 300 pixels tall. The same size gets
 the same photo unless you select the random option or the photo collection
 changes.
 
-The [image builder](https://cmutli.github.io/cmu-placemellon/builder.html)
+The [image builder](https://cmu-web.github.io/cmu-web-placemellon/builder.html)
 lets you choose a size and options, preview the image, and copy its URL or
-HTML. The [options reference](https://cmutli.github.io/cmu-placemellon/options.html)
+HTML. The [options reference](https://cmu-web.github.io/cmu-web-placemellon/options.html)
 covers categories, random photos, grayscale, and Scotty.
 
 ## Support
 
 Report problems or suggest changes in
-[GitHub issues](https://github.com/CMUTLI/cmu-placemellon/issues).
+[GitHub issues](https://github.com/cmu-web/cmu-web-placemellon/issues).
 
 ## Contributing
 

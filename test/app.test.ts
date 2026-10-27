@@ -225,12 +225,12 @@ describe("routes", () => {
       .expect("Content-Type", /html/);
     expect(res.text).toContain("<title>PlaceMellon");
     await request(createApp(catalog, fakeFetch)).get("/js/docs.js").expect(200);
-    process.env.DOCS_URL = "https://cmutli.github.io/cmu-placemellon/";
+    process.env.DOCS_URL = "https://cmu-web.github.io/cmu-web-placemellon/";
     try {
       await request(createApp(catalog, fakeFetch))
         .get("/")
         .expect(302)
-        .expect("Location", "https://cmutli.github.io/cmu-placemellon/");
+        .expect("Location", "https://cmu-web.github.io/cmu-web-placemellon/");
     } finally {
       delete process.env.DOCS_URL;
     }
