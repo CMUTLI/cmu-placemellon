@@ -9,7 +9,7 @@ Photos come from University Communications & Marketing's CMU Selects
 collection. Use them for Carnegie Mellon work; see the
 [photo source and usage information](https://cmu-web.github.io/cmu-web-placemellon/about.html).
 
-## Use it
+## Get started
 
 Put a PlaceMellon URL in an image tag:
 
